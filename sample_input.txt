@@ -1,0 +1,37 @@
+read_data
+lammps_input.dat
+
+bond_style
+harmonic
+
+bond_coeffs
+1 553.0 1.0
+
+angle_coeffs
+1 55.0 109.47
+
+cutoff_distance
+12.0
+
+coulomb_style
+0.2 dsf
+
+force_check
+.false. 0.1
+
+run_style
+nvt
+andersen
+
+timestep
+1
+
+run
+1
+
+dump_freq
+1 1 1
+
+temperature
+373.15
+

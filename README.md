@@ -1,2 +1,2 @@
-# Solvated-Electron
-This is a modified version of Classical-MD
+# Classical-MD
+This will be the classical section of this code.

@@ -22,6 +22,30 @@ Module common_variables
   character(len=50) :: bond_style
 end module
 
+!**************************************************************************************************************
+! This module contains arrays and scalars that are common to several subroutines in this solve code.
+! These variables do not need to be declared in other subroutines. 
+! Written by Ward Thompson
+! Hackathon Wednesday May 17, 2017
+!**************************************************************************************************************
+
+module quantum_variables
+
+    use kinds
+    implicit none
+    integer(kind=ip) :: ng
+    integer(kind=ip), allocatable, dimension(:) :: inxgridx, inygridx, inzgridx
+    integer(kind=ip), allocatable, dimension(:) :: inxgridy, inygridy, inzgridy
+    integer(kind=ip), allocatable, dimension(:) :: inxgridz, inygridz, inzgridz
+    integer(kind=ip), allocatable, dimension(:) :: indx, irankyx, irankzx
+    integer(kind=ip), allocatable, dimension(:) :: isx, ifx, isy, ify, isz, ifz
+
+    real(kind=dp), allocatable, dimension(:) :: v_e
+    real(kind=dp), allocatable, dimension(:,:) :: rg_e
+    real(kind=dp), allocatable, dimension(:,:) :: kex, key, kez
+
+end module quantum_variables
+
 
 
 Module constants

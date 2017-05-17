@@ -9,7 +9,7 @@ use quantum_variables
 implicit none
 
 real(kind=ip) :: idtmp, i , j
-real(kind=dp) :: del,dtmp
+real(kind=dp) :: del,dtmp, pref
 
 pref = 1d0/(2d0*me*del**2)
 

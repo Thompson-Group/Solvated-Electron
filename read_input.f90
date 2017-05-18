@@ -1,8 +1,9 @@
-subroutine read_input(input_filename,df_xyz,df_thermo,df_rest, nvt_type,fc_flag,nstep)
+subroutine read_input(input_filename, fc_flag)
     use kinds
     use common_variables
-    integer(kind=ip) :: i, j, ign_int,df_xyz, df_thermo, df_rest,nstep,done
-    character(len=50) :: data_filename,word,input_filename, run_style, nvt_type, coul_tmp
+    use quantum_variables
+    integer(kind=ip) :: i, j, ign_int, done
+    character(len=50) :: data_filename, word, input_filename, coul_tmp
     logical :: restart,fc_flag
     open(unit=ninput, file=input_filename)
      
@@ -67,15 +68,27 @@ subroutine read_input(input_filename,df_xyz,df_thermo,df_rest, nvt_type,fc_flag,
                 read(ninput,*) run_style(i)
                 if (run_style(i) .eq. 'nve') then
                     nvt_type(i)='none'
+                    nvt_freq(i)=0
                 else if (run_style(i) .eq. 'nvt') then
-                    read(ninput,*) nvt_type(i)
+                    read(ninput,*) nvt_type(i), nvt_freq(i)
+                    if (nvt_type(i) .eq. 'andersen') then
+                        read(ninput,*) nu
                 else if (run_style(i) .eq. 'qm_nve') then
                     nvt_type(i)='none'
+                    nvt_freq(i)=0
                 else if (run_style(i) .eq. 'qm_nvt') then
-                    read(ninput,*) nvt_type(i)
+                    read(ninput,*) nvt_type(i), nvt_freq(i)
+                    if (nvt_type(i) .eq. 'andersen') then
+                        read(ninput,*) nu
+                    endif
                 else
                     write(*,*) "Error (read_input.f90): Couldn't find the
                     run_style in the input file."
+                    stop
+                endif
+                if (nvt_type(i) .ne. 'rescale' .or. nvt_type(i) .ne. 'andersen'
+                .or. nvt_type(i) .ne. 'none') then
+                    write(*,*) "Error (read_input.f90): Incorrect nvt_type"
                     stop
                 endif
             enddo

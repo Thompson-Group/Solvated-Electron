@@ -1,4 +1,4 @@
-subroutine kinetic(nraw)
+subroutine kinetic
 !--------------------------------------------------------------------------
 !     Program to compute and store the one-dimensional kinetic energy
 !       matrices using the -infinity to infinity form of Sinc-function DVR

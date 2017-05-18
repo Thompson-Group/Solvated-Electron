@@ -19,7 +19,10 @@ Module common_variables
   real(kind=dp), allocatable, dimension(:) :: fx_v, fy_v, fz_v, fx_c, fy_c, fz_c, fx_tot, fy_tot, fz_tot
   real(kind=dp), allocatable, dimension(:) :: M, q, vx, vy, vz, ep, sig
   real(kind=dp), allocatable, dimension(:) :: x, y, z, fx_b, fy_b, fz_b, fx_a, fy_a, fz_a, k_r, req, k_ang, theta_eq
-  character(len=50) :: bond_style
+  character(len=50) :: bond_stylee, nvt_type
+  integer(kind=ip) :: nvt_freq
+  real(kind=dp) :: nu
+
 end module
 
 !**************************************************************************************************************

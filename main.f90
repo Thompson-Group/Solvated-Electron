@@ -17,7 +17,7 @@ program classical_md
        integer(kind = ip) :: df_xyz,df_thermo,df_rest,nstep,fc_flag
        integer(kind = ip) :: i,d,nargs
 
-       character(len=50) :: input_filename,nvt_type,arg
+       character(len=50) :: input_filename,arg
 
        logical :: restart,change
 
@@ -41,7 +41,7 @@ program classical_md
 ! configurations
 
        write(*,*) "Reading inputs"
-       call read_input(input_filename,df_xyz,df_thermo,df_rest,nvt_type,fc_flag,&
+       call read_input(input_filename,df_xyz,df_thermo,df_rest,fc_flag,&
                        nstep)
 
 ! set initial velocites if not a restart
@@ -70,32 +70,9 @@ program classical_md
 !*****************************START MD SIMULATION***********************!
 
        write(*,*) "Beginning Molecular Dynamics!"
-       do i = 1 , nstep
 
-!            write(*,*) "Step: " , i 
-! update positions in first stage of VV integrator
+       call nvt_run(nstep, df_thermo, df_xyz)
 
-            call velocity_verlet
-
-! calculate thermodynamic properties
-
-            if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
-
-! apply thermostat
-
-            
-            if ((trim(nvt_type) .eq. "rescale" .or. &
-                trim(nvt_type) .eq. "anderson")) then
-
-                 call thermostat(nvt_type)
-
-            endif
-
-! write traj
-
-            if (mod(i,df_xyz) .eq. 0) call dump(i)
-
-       enddo
 
 ! close output files
 

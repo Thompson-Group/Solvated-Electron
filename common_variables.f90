@@ -42,7 +42,7 @@ module quantum_variables
     integer(kind=ip), allocatable, dimension(:) :: inxgridx, inygridx, inzgridx
     integer(kind=ip), allocatable, dimension(:) :: inxgridy, inygridy, inzgridy
     integer(kind=ip), allocatable, dimension(:) :: inxgridz, inygridz, inzgridz
-    integer(kind=ip), allocatable, dimension(:) :: indx, irankyx, irankzx
+    integer(kind=ip), allocatable, dimension(:) :: indxx, irankyx, irankzx
     integer(kind=ip), allocatable, dimension(:) :: isx, ifx, isy, ify, isz, ifz
 
     real(kind=dp), allocatable, dimension(:) :: v_e, Eigval

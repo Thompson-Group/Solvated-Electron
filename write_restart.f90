@@ -3,7 +3,7 @@ subroutine write_restart()
     use common_variables
     implicit none
     integer(kind=ip) :: i
-    real(kind=dp) :: m
+    real(kind=dp) :: mass
     open(unit=nrest,file="traj.restart")
     
 
@@ -26,15 +26,15 @@ subroutine write_restart()
         write(nrest,*) "How did you get impropers into this?"
     end if
     write(nrest,*) 
-    write(nrest,*) xlo,xhi "xlo xhi"
+    write(nrest,*) xlo, xhi, "xlo xhi"
     write(nrest,*) ylo, yhi, "ylo yhi"
     write(nrest,*) zlo, zhi, "zlo zhi"
     write(nrest,*)
     ! Write out Masses
     write(nrest,*) "Masses"
     write(nrest,*)
-    DO i=1,n_a_type
-        m=M(i)*4.184*10**4
+    DO i = 1, n_a_type
+        mass = M(i)*4.184*10**4
         write(nrest,*) i, m
     END DO
     write(nrest,*)

@@ -1,5 +1,5 @@
 subroutine read_input(input_filename, fc_flag)
-    use kinds
+
     use common_variables
     use quantum_variables
     use input_variables
@@ -56,7 +56,7 @@ subroutine read_input(input_filename, fc_flag)
                 stop
             end if
         else if (word .eq. 'force_check') then
-            read(ninput,*) fc_flag,del
+            read(ninput,*) fc_flag, delta
         else if (word .eq. 'elements') then
             allocate(elements(n_a_type))
             do i=1,n_a_type
@@ -65,43 +65,50 @@ subroutine read_input(input_filename, fc_flag)
         else if (word .eq. 'stages') then
             read(ninput,*) n_stages
             if (n_stages .gt. 5) then
-                write(*,*) "Error (read_input.f90): You have selected way too
-                many stages. Rethink your life choices, and choose a number that is five or
-                less. Do not pass go. Do not collect 200 dollars."
+                write(*,*) "Error (read_input.f90): You have selected way too many stages."
+                write(*,*) " Rethink your life choices, and choose a number that is five "
+                write(*,*) " or less. Do not pass go. Do not collect 200 dollars."
                 stop
             endif
-            do i=1,n_stages
-                read(ninput,*) srun_style(i)
-                if (srun_style(i) .eq. 'nve') then
-                    snvt_type(i)='none'
-                    snvt_freq(i)=0
-                else if (srun_style(i) .eq. 'nvt') then
-                    read(ninput,*) snvt_type(i), snvt_freq(i)
-                    if (snvt_type(i) .eq. 'andersen') then
-                        read(ninput,*) snu(i)
-                else if (srun_style(i) .eq. 'qm_nve') then
-                    snvt_type(i)='none'
-                    snvt_freq(i)=0
-                else if (srun_style(i) .eq. 'qm_nvt') then
-                    read(ninput,*) snvt_type(i), snvt_freq(i)
-                    if (snvt_type(i) .eq. 'andersen') then
-                        read(ninput,*) snu(i)
-                    endif
-                else
-                    write(*,*) "Error (read_input.f90): Couldn't find the
-                    run_style in the input file."
-                    stop
-                endif
-                if (snvt_type(i) .ne. 'rescale' .or. snvt_type(i) .ne. 'andersen'
-                .or. snvt_type(i) .ne. 'none') then
-                    write(*,*) "Error (read_input.f90): Incorrect nvt_type"
-                    stop
-                endif
+            do i = 1, n_stages
+               read(ninput,*) srun_style(i)
+               if (srun_style(i) .eq. 'nve') then
+                  snvt_type(i)='none'
+                  snvt_freq(i)=0
+               else if (srun_style(i) .eq. 'nvt') then
+                  read(ninput,*) snvt_type(i), snvt_freq(i)
+                  if (snvt_type(i) .eq. 'andersen') then
+                     read(ninput,*) snu(i)
+                  endif
+               else if (srun_style(i) .eq. 'qm_nve') then
+                  snvt_type(i)='none'
+                  snvt_freq(i)=0
+                  read(ninput,*)
+                  read(ninput,*) xmin, xmax, nraw, vcut
+                  read(ninput,*) niter, tol, eig_tol, Nst
+               else if (srun_style(i) .eq. 'qm_nvt') then
+                  read(ninput,*) snvt_type(i), snvt_freq(i)
+                  if (snvt_type(i) .eq. 'andersen') then
+                     read(ninput,*) snu(i)
+                  endif
+                  read(ninput,*)
+                  read(ninput,*) xmin, xmax, nraw, vcut
+                  read(ninput,*) niter, tol, eig_tol, Nst
+               else
+                  write(*,*) "Error (read_input.f90): Couldn't find the run_style"
+                  write(*,*) " in the input file."
+                  stop
+               endif
+               if (snvt_type(i) .ne. 'rescale' .or. snvt_type(i) .ne. 'andersen' &
+                    .or. snvt_type(i) .ne. 'none') then
+                  write(*,*) "Error (read_input.f90): Incorrect nvt_type"
+                  stop
+               endif
             enddo
         else if (word .eq. 'timestep') then
             if (n_stages .eq. 0) then
-                write(*,*) "Error (read_input.f90): Timestep defined before
-                number of stages."
+                write(*,*) "Error (read_input.f90): Timestep defined before"
+                write(*,*) " number of stages."
                 stop
             endif
             do i=1,n_stages
@@ -110,18 +117,18 @@ subroutine read_input(input_filename, fc_flag)
             
         else if (word .eq. 'run') then 
             if (n_stages .eq. 0) then
-                write(*,*) "Error (read_input.f90): Step defined before number
-                of stages."
+                write(*,*) "Error (read_input.f90): Step defined before number"
+                write(*,*) " of stages."
                 stop
             endif
-            do i=1,n_stages
-                read(ninput,*) nstep(i)
+            do i = 1, n_stages
+                read(ninput,*) snstep(i)
             enddo
 
         else if (word .eq. 'dump_freq') then 
             if (n_stages .eq. 0) then
-                write(*,*) "Error (read_input.f90): Dump Frequency defined
-                before number of stages."
+                write(*,*) "Error (read_input.f90): Dump Frequency defined"
+                write(*,*) " before number of stages."
                 stop
             endif
             do i=1,n_stages
@@ -129,8 +136,8 @@ subroutine read_input(input_filename, fc_flag)
             enddo
         else if (word .eq. 'temperature') then 
             if (n_stages .eq. 0) then
-                write(*,*) "Error (read_input.f90): Temperature defined before
-                the number of stages"
+                write(*,*) "Error (read_input.f90): Temperature defined before"
+                write(*,*) " the number of stages"
                 stop
             endif
             do i=1,n_stages

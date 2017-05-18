@@ -93,7 +93,7 @@
 
       try = 0.0_dp
       do i = 1, ng
-         do j = 1, n_eigtol
+         do j = 1, eig_tol
 
             do k = 0, actiter - 1 
                try(i) = try(i) + Eigvec(k+1,j)*Krylov_vectors(k,i)
@@ -101,7 +101,7 @@
 
          enddo
       enddo
-      try = try/real(n_eigtol)
+      try = try/real(eig_tol)
 
 
    end subroutine initial_guess
@@ -120,7 +120,7 @@
      implicit none
 
      integer(kind=ip) :: i, j, k
-     real(kind=dp) :: psi2tmp
+     real(kind=dp) :: psi2tmp, norm
      real(kind=dp), dimension(3) :: re
      real(kind=dp), dimension(ng) :: psi
      real(kind=dp), dimension(n_atoms) :: fx_avg, fy_avg, fz_avg

@@ -6,10 +6,8 @@
 !***********************************************************************************
       subroutine grid(re)
 
-      use grid_index
       use kinds
       use ham_data
-      use constants
       use common_variables
       use quantum_variables
       
@@ -20,13 +18,14 @@
        real(kind=dp), dimension(:), allocatable :: zg, xg, yg
 !    ------semi - global array
        real(kind=dp), dimension(3), intent(out) :: re
-    
-
+       real(kind=dp), allocatable, dimension(:) :: fxtmp, fytmp, fztmp    
+       real(kind=dp) :: vtmp
+ 
       allocate(zg(nraw)); allocate(yg(nraw)); allocate(xg(nraw))
       allocate(fg_ex(nraw,n_atoms)); allocate(fg_ey(nraw,n_atoms))
       allocate(fg_ez(nraw,n_atoms))
 
-      del=(xmax-xmin)/nraw
+      del=(xmax-xmin)/real(nraw)
 
 !      write(nout,'(A,F12.5,A)') ' DVR dx = ',del,' angstroms'
 

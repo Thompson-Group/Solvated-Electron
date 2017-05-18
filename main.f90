@@ -14,7 +14,7 @@ program classical_md
 
        implicit none
 
-       integer(kind = ip) :: df_xyz,df_thermo,df_rest,nstep,fc_flag
+       integer(kind = ip) :: fc_flag
        integer(kind = ip) :: i,d,nargs
 
        character(len=50) :: input_filename,arg

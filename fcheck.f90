@@ -46,7 +46,7 @@
 ! Calculate the numerical force in the x-direction
 ! shift the atom in the +x direction and recalculate the potential
 
-    x(iat) = x(iat) + del
+    x(iat) = x(iat) + delta
 
     call forces
 
@@ -55,7 +55,7 @@
 
 ! shift the atom in the -x direction and recalculate the potential
 
-    x(iat) = x(iat) - 2.0_dp*del
+    x(iat) = x(iat) - 2.0_dp*delta
 
     call forces
 
@@ -64,20 +64,20 @@
 
 !   Calculate the forces numerically
 
-    fxnum = -(vp - vm)/(2.0_dp*del)
-    fxnum_a = -(vp_a - vm_a)/(2.0_dp*del)
-    fxnum_b = -(vp_b - vm_b)/(2.0_dp*del)
-    fxnum_c = -(vp_c - vm_c)/(2.0_dp*del)
-    fxnum_v = -(vp_v - vm_v)/(2.0_dp*del)
+    fxnum = -(vp - vm)/(2.0_dp*delta)
+    fxnum_a = -(vp_a - vm_a)/(2.0_dp*delta)
+    fxnum_b = -(vp_b - vm_b)/(2.0_dp*delta)
+    fxnum_c = -(vp_c - vm_c)/(2.0_dp*delta)
+    fxnum_v = -(vp_v - vm_v)/(2.0_dp*delta)
     
 ! Reset the x position
 
-    x(iat) = x(iat) + del
+    x(iat) = x(iat) + delta
 
 ! Calculate the numerical force in the y-direction
 ! shift the atom in the +y direction and recalculate the potential
 
-    y(iat) = y(iat) + del
+    y(iat) = y(iat) + delta
 
     call forces
 
@@ -86,7 +86,7 @@
 
 ! shift the atom in the -y direction and recalculate the potential
 
-    y(iat) = y(iat) - 2.0_dp*del
+    y(iat) = y(iat) - 2.0_dp*delta
 
     call forces
 
@@ -95,20 +95,20 @@
 
 !   Calculate the forces numerically
 
-    fynum = -(vp - vm)/(2.0_dp*del)
-    fynum_a = -(vp_a - vm_a)/(2.0_dp*del)
-    fynum_b = -(vp_b - vm_b)/(2.0_dp*del)
-    fynum_c = -(vp_c - vm_c)/(2.0_dp*del)
-    fynum_v = -(vp_v - vm_v)/(2.0_dp*del)
+    fynum = -(vp - vm)/(2.0_dp*delta)
+    fynum_a = -(vp_a - vm_a)/(2.0_dp*delta)
+    fynum_b = -(vp_b - vm_b)/(2.0_dp*delta)
+    fynum_c = -(vp_c - vm_c)/(2.0_dp*delta)
+    fynum_v = -(vp_v - vm_v)/(2.0_dp*delta)
     
 ! Reset the y position
 
-    y(iat) = y(iat) + del
+    y(iat) = y(iat) + delta
 
 ! Calculate the numerical force in the z-direction
 ! shift the atom in the +z direction and recalculate the potential
 
-    z(iat) = z(iat) + del
+    z(iat) = z(iat) + delta
 
     call forces
 
@@ -117,7 +117,7 @@
 
 ! shift the atom in the -z direction and recalculate the potential
 
-    z(iat) = z(iat) - 2.0_dp*del
+    z(iat) = z(iat) - 2.0_dp*delta
 
     call forces
 
@@ -126,15 +126,15 @@
 
 !   Calculate the forces numerically
 
-    fznum = -(vp - vm)/(2.0_dp*del)
-    fznum_a = -(vp_a - vm_a)/(2.0_dp*del)
-    fznum_b = -(vp_b - vm_b)/(2.0_dp*del)
-    fznum_c = -(vp_c - vm_c)/(2.0_dp*del)
-    fznum_v = -(vp_v - vm_v)/(2.0_dp*del)
+    fznum = -(vp - vm)/(2.0_dp*delta)
+    fznum_a = -(vp_a - vm_a)/(2.0_dp*delta)
+    fznum_b = -(vp_b - vm_b)/(2.0_dp*delta)
+    fznum_c = -(vp_c - vm_c)/(2.0_dp*delta)
+    fznum_v = -(vp_v - vm_v)/(2.0_dp*delta)
     
 ! Reset the z position
 
-    z(iat) = z(iat) + del
+    z(iat) = z(iat) + delta
 
 !   Write out results
 

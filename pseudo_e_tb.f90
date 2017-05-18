@@ -18,9 +18,14 @@
   integer(kind=ip) :: i,k
 
 ! arrays
-  real(kind=dp),allocatable,dimension(:) :: fxtmp,fytmp,fztmp
+  real(kind=dp),allocatable,dimension(:),intent(inout) :: fxtmp,fytmp,fztmp
   real(kind=dp),dimension(3)    :: L,rOe,r 
   real(kind=dp), dimension(3), intent(in) :: re
+<<<<<<< HEAD
+  real(kind=dp), intent(inout) :: vtmp
+=======
+  real(kind=dp), intent(out) :: vtmp
+>>>>>>> qm_input
 
   allocate(fxtmp(n_atoms))
   allocate(fytmp(n_atoms))
@@ -116,19 +121,19 @@
                 vtmp = vtmp - (e1*qh/dOe + (e2 - e3)*B1h/dOe)
                 fxtmp(i) = fxtmp(i) + qh*rOe(1)*(e1/dOe**3             &
                  - (2_dp/sqrt(pi))*A1h*exp(-(A1h*dOe)**2)/dOe**2)      &             
-                 + B1h*r1e(1)*(2_dp/sqrt(pi))*((B2h*exp(-(B2h*dOe)**2))&
+                 + B1h*rOe(1)*(2_dp/sqrt(pi))*((B2h*exp(-(B2h*dOe)**2))&
                  - B3h*exp(-(B3h*dOe)**2))/dOe**2                        &
                  - (e2 - e3)/dOe**3  
 
                 fytmp(i) = fytmp(i) + qh*rOe(2)*(e1/dOe**3             &
                  - (2_dp/sqrt(pi))*A1h*exp(-(A1h*dOe)**2)/dOe**2)      &
-                 + B1h*r1e(1)*(2_dp/sqrt(pi))*((B2h*exp(-(B2h*dOe)**2))&
+                 + B1h*rOe(1)*(2_dp/sqrt(pi))*((B2h*exp(-(B2h*dOe)**2))&
                  - B3h*exp(-(B3h*dOe)**2))/dOe**2                        &
                  - (e2 - e3)/dOe**3
 
                 fztmp(i) = fztmp(i) + qh*rOe(3)*(e1/dOe**3             &
                  - (2_dp/sqrt(pi))*A1h*exp(-(A1h*dOe)**2)/dOe**2)      &
-                 + B1h*r1e(1)*(2_dp/sqrt(pi))*((B2h*exp(-(B2h*dOe)**2))&
+                 + B1h*rOe(1)*(2_dp/sqrt(pi))*((B2h*exp(-(B2h*dOe)**2))&
                  - B3h*exp(-(B3h*dOe)**2))/dOe**2                        &
                  - (e2 - e3)/dOe**3
                 endif 

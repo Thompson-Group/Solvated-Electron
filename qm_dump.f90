@@ -1,5 +1,6 @@
 subroutine qm_dump(i)
    use common_variables
+   use quantum_variables
    use constants
    implicit none
 

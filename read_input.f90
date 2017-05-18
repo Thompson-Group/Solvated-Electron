@@ -50,34 +50,73 @@ subroutine read_input(input_filename,df_xyz,df_thermo,df_rest, nvt_type,fc_flag,
             else if (coul_tmp .eq. 'dsf') then
                 coul_flag = 2
             else
-                write(*,*) "Error: Invalid electrostatics style"
+                write(*,*) "Error (read_input.f90): Invalid electrostatics style"
+                stop
             end if
         else if (word .eq. 'force_check') then
             read(ninput,*) fc_flag,del
-        else if (word .eq. 'run_style') then 
-            read(ninput,*)  run_style
-
-            if (run_style .eq. 'nve') then
-                nvt_type='none'
-            else if (run_style .eq. 'nvt') then
-                !If run_style is nvt, need to choose options: rescale or anderson 
-                read(ninput,*) nvt_type
-            else
-                write(*,*) "Error: Couldn't find the run_style in input file"
-            endif 
+        else if (word .eq. 'stages') then
+            read(ninput,*) n_stages
+            if (n_stages .gt. 5) then
+                write(*,*) "Error (read_input.f90): You have selected way too
+                many stages. Rethink your life choices, and choose a number that is five or
+                less. Do not pass go. Do not collect 200 dollars."
+                stop
+            endif
+            do i=1,n_stages
+                read(ninput,*) run_style(i)
+                if (run_style(i) .eq. 'nve') then
+                    nvt_type(i)='none'
+                else if (run_style(i) .eq. 'nvt') then
+                    read(ninput,*) nvt_type(i)
+                else if (run_style(i) .eq. 'qm_nve') then
+                    nvt_type(i)='none'
+                else if (run_style(i) .eq. 'qm_nvt') then
+                    read(ninput,*) nvt_type(i)
+                else
+                    write(*,*) "Error (read_input.f90): Couldn't find the
+                    run_style in the input file."
+                    stop
+                endif
+            enddo
         else if (word .eq. 'timestep') then
-            read(ninput,*) dt
-
+            if (n_stages .eq. 0) then
+                write(*,*) "Error (read_input.f90): Timestep defined before
+                number of stages."
+                stop
+            endif
+            do i=1,n_stages
+                read(ninput,*) dt(i)
+            enddo
             
         else if (word .eq. 'run') then 
-            read(ninput,*) nstep
+            if (n_stages .eq. 0) then
+                write(*,*) "Error (read_input.f90): Step defined before number
+                of stages."
+                stop
+            endif
+            do i=1,n_stages
+                read(ninput,*) nstep(i)
+            enddo
 
         else if (word .eq. 'dump_freq') then 
-            read(ninput,*) df_xyz, df_thermo, df_rest
-
-    
+            if (n_stages .eq. 0) then
+                write(*,*) "Error (read_input.f90): Dump Frequency defined
+                before number of stages."
+                stop
+            endif
+            do i=1,n_stages
+                read(ninput,*) df_xyz(i), df_thermo(i), df_rest(i)
+            enddo
         else if (word .eq. 'temperature') then 
-            read(ninput,*) temp
+            if (n_stages .eq. 0) then
+                write(*,*) "Error (read_input.f90): Temperature defined before
+                the number of stages"
+                stop
+            endif
+            do i=1,n_stages
+                read(ninput,*) temp(i)
+            enddo
         else
             exit
         end if

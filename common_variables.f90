@@ -39,16 +39,18 @@ module quantum_variables
 
     use kinds
     implicit none
-    integer(kind=ip) :: ng
+    integer(kind=ip) :: ng, niter, actiter, Nst
     integer(kind=ip), allocatable, dimension(:) :: inxgridx, inygridx, inzgridx
     integer(kind=ip), allocatable, dimension(:) :: inxgridy, inygridy, inzgridy
     integer(kind=ip), allocatable, dimension(:) :: inxgridz, inygridz, inzgridz
     integer(kind=ip), allocatable, dimension(:) :: indx, irankyx, irankzx
     integer(kind=ip), allocatable, dimension(:) :: isx, ifx, isy, ify, isz, ifz
 
-    real(kind=dp), allocatable, dimension(:) :: v_e
-    real(kind=dp), allocatable, dimension(:,:) :: rg_e
-    real(kind=dp), allocatable, dimension(:,:) :: kex, key, kez
+    real(kind=dp), allocatable, dimension(:) :: v_e, Eigval
+    real(kind=dp), allocatable, dimension(:,:) :: rg_e, Eigvec, Krylov_vectors
+    real(kind=dp), allocatable, dimension(:,:) :: kex, key, kez, fg_ex, fg_ey, fg_ez
+    real(kind=dp) :: vtmp, xmin, xmax, nraw, del, tol, eig_tol, v_e_avg, r_e_avg
+    real(kind=dp) :: r2_e_avg
 
 end module quantum_variables
 

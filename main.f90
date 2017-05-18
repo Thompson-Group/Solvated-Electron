@@ -86,7 +86,7 @@ program classical_md
           call thermo_dump(0)
           write(6,*) ' made it through thermo_dump '
           write(6,*) ' srun_style(istage) = ',srun_style(istage)
-          stop
+          
 
           if(trim(srun_style(istage)).eq.'nve') then
 

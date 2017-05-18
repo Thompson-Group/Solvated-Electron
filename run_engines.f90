@@ -69,7 +69,7 @@ subroutine qm_nvt_run
   
         ! calculate thermodynamic properties            
         if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
-
+        if (mod(i,df_termo) .eq. 0) call qm_dump(i)
         ! apply thermostat
         if (mod(i,nvt_freq).eq.0) call thermostat
           
@@ -92,7 +92,7 @@ subroutine qm_nve_run
   
         ! calculate thermodynamic properties            
         if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
-
+        if (mod(i,df_thermo) .eq. 0) call qm_dump(i)
         ! write traj                                                                                                                     
         if (mod(i,df_xyz) .eq. 0) call dump(i)
 

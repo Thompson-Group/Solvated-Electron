@@ -1,103 +1,115 @@
 !   Subroutine to run an NVE trajectory for a given number of steps
 
-subroutine nve_run
+    subroutine nve_run
 
-    use common_variables
+      use common_variables
+      implicit none
 
-    implicit none
-    integer(kind = ip) :: i
+      integer(kind = ip) :: i
+      
+      do i = 1 , nstep
+         
+         ! update positions in first stage of VV integrator
+         call velocity_verlet
+         
+         ! calculate thermodynamic properties            
+         if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
+         
+         ! write traj                                                                                                                     
+         if (mod(i,df_xyz) .eq. 0) call dump(i)
+         
+         ! write restart         
+         if (mod(i,df_rest) .eq. 0) call write_restart(i)
+         
+      enddo
 
-    do i = 1 , nstep
-
-        ! update positions in first stage of VV integrator
-        call velocity_verlet
-
-        ! calculate thermodynamic properties            
-        if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
-
-        ! write traj                                                                                                                     
-        if (mod(i,df_xyz) .eq. 0) call dump(i)
-
-        ! write restart
-
-        if (mod(i,df_rest) .eq. 0) call write_restart(i)
-
-    enddo
-
-end subroutine nve_run
+    end subroutine nve_run
 
 
 !   Subroutine to run an NVT trajectory for a given number of steps
 
-subroutine nvt_run
+    subroutine nvt_run
 
-    use common_variables
+      use common_variables
+      implicit none
+      
+      integer(kind = ip) :: i
+      
+      do i = 1 , nstep
+         
+         ! update positions in first stage of VV integrator
+         call velocity_verlet
+         
+         ! calculate thermodynamic properties            
+         if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
+         
+         ! apply thermostat
+         if (mod(i,nvt_freq).eq.0) call thermostat
+         
+         ! write traj                                                                                                                     
+         if (mod(i,df_xyz) .eq. 0) call dump(i)
+         
+         ! write restart
+         if (mod(i,df_rest) .eq. 0) call write_restart(i)
+      enddo
+      
+    end subroutine nvt_run
 
-    implicit none
+! Subroutine to do carry out a QM trajectory of the solvated electron
+!   with a thermostat on the waters
 
-    integer(kind = ip) :: i
+    subroutine qm_nvt_run
 
-    do i = 1 , nstep
+      use common_variables
+      implicit none
 
-        ! update positions in first stage of VV integrator
-        call velocity_verlet
-  
-        ! calculate thermodynamic properties            
-        if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
+      integer(kind=ip) :: i
 
-        ! apply thermostat
-        if (mod(i,nvt_freq).eq.0) call thermostat
-          
-        ! write traj                                                                                                                     
-        if (mod(i,df_xyz) .eq. 0) call dump(i)
+      do i = 1, nstep
+         
+         ! update positions in first stage of VV integrator
+         call velocity_verlet
+         
+         ! calculate thermodynamic properties            
+         if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
+         if (mod(i,df_thermo) .eq. 0) call qm_dump(i)
+         
+         ! apply thermostat
+         if (mod(i,nvt_freq).eq.0) call thermostat
+         
+         ! write traj                                                                                                                     
+         if (mod(i,df_xyz) .eq. 0) call dump(i)
+         
+         ! write restart
+         if (mod(i,df_rest) .eq. 0) call write_restart(i)
+      enddo
 
-        ! write restart
-        if (mod(i,df_rest) .eq. 0) call write_restart(i)
-    enddo
+    end subroutine qm_nvt_run
 
-end subroutine nvt_run
+! Subroutine to do carry out a QM trajectory of the solvated electron in NVE
 
-! Subroutine to do some stuff.
+    subroutine qm_nve_run
 
-subroutine qm_nvt_run
-    use common_variables
-    implicit none
-    integer(kind=ip) :: i
-    do i = 1, nstep
-        ! update positions in first stage of VV integrator
-        call velocity_verlet
-  
-        ! calculate thermodynamic properties            
-        if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
-        if (mod(i,df_termo) .eq. 0) call qm_dump(i)
-        ! apply thermostat
-        if (mod(i,nvt_freq).eq.0) call thermostat
-          
-        ! write traj                                                                                                                     
-        if (mod(i,df_xyz) .eq. 0) call dump(i)
+      use common_variables
+      implicit none
 
-        ! write restart
-        if (mod(i,df_rest) .eq. 0) call write_restart(i)
-    enddo
-end subroutine qm_nvt_run
+      integer(kind=ip) :: i
 
+      do i = 1, nstep
 
-subroutine qm_nve_run
-    use common_variables
-    implicit none
-    integer(kind=ip) :: i
-    do i = 1, nstep
-        ! update positions in first stage of VV integrator
-        call velocity_verlet
-  
-        ! calculate thermodynamic properties            
-        if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
-        if (mod(i,df_thermo) .eq. 0) call qm_dump(i)
-        ! write traj                                                                                                                     
-        if (mod(i,df_xyz) .eq. 0) call dump(i)
+         ! update positions in first stage of VV integrator
+         call velocity_verlet
+         
+         ! calculate thermodynamic properties            
+         if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
+         if (mod(i,df_thermo) .eq. 0) call qm_dump(i)
+        
+         ! write traj                                                                                                                     
+         if (mod(i,df_xyz) .eq. 0) call dump(i)
 
-        ! write restart
-        if (mod(i,df_rest) .eq. 0) call write_restart(i)
-    enddo
-end subroutine qm_nvt_run
+         ! write restart
+         if (mod(i,df_rest) .eq. 0) call write_restart(i)
+      enddo
+
+    end subroutine qm_nve_run
 

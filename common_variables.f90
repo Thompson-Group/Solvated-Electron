@@ -13,7 +13,7 @@ Module common_variables
 
   integer(kind=ip) :: n_atoms, n_bonds, n_angles, n_dih, n_imp, coul_flag
   integer(kind=ip) :: n_a_type, n_b_type, n_angle_type, n_dih_type, n_imp_type
-  real(kind=dp) :: xlo, xhi, ylo, yhi, zlo, zhi, Lx, Ly, Lz, r_cut, Temp, del, alpha, v_a, v_b, v_c, v_v, v_tot
+  real(kind=dp) :: xlo, xhi, ylo, yhi, zlo, zhi, Lx, Ly, Lz, r_cut, Temp, delta, alpha, v_a, v_b, v_c, v_v, v_tot
   integer(kind=ip), allocatable, dimension(:)   :: a_id, mol_id, a_type
   real(kind=dp), allocatable, dimension(:,:) :: rx, ry, rz, bond_table, angle_table, ee, ss, qq, dih_table
   real(kind=dp), allocatable, dimension(:) :: fx_v, fy_v, fz_v, fx_c, fy_c, fz_c, fx_tot, fy_tot, fz_tot
@@ -22,8 +22,8 @@ Module common_variables
   real(kind=ip) :: n_stages
   character(len=50) :: bond_style, run_style, nvt_type
   character(len=2), allocatable, dimension(:) :: elements
-  real(kind=dp) :: dt, temp, nu
-  real(kind=ip) :: df_xyz, df_thermo, df_rest, nstep, nvt_freq
+  real(kind=dp) :: dt, nu
+  integer(kind=ip) :: df_xyz, df_thermo, df_rest, nstep, nvt_freq
 
 
   end module
@@ -49,7 +49,9 @@ module quantum_variables
     real(kind=dp), allocatable, dimension(:) :: v_e, Eigval
     real(kind=dp), allocatable, dimension(:,:) :: rg_e, Eigvec, Krylov_vectors
     real(kind=dp), allocatable, dimension(:,:) :: kex, key, kez, fg_ex, fg_ey, fg_ez
-    real(kind=dp) :: vtmp, xmin, xmax, nraw, del, tol, eig_tol, v_e_avg, r_e_avg
+    real(kind=dp), dimension(3) :: r_e_avg
+    real(kind=dp) :: xmin, xmax, del, tol, v_e_avg
+    integer(kind=ip) :: nraw, eig_tol
     real(kind=dp) :: r2_e_avg
 
 end module quantum_variables

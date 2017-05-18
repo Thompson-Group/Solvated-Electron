@@ -71,81 +71,83 @@ subroutine read_input(input_filename, fc_flag)
                 stop
             endif
             do i = 1, n_stages
-               read(ninput,*) srun_style(i)
-               if (srun_style(i) .eq. 'nve') then
-                  snvt_type(i)='none'
-                  snvt_freq(i)=0
-               else if (srun_style(i) .eq. 'nvt') then
-                  read(ninput,*) snvt_type(i), snvt_freq(i)
-                  if (snvt_type(i) .eq. 'andersen') then
-                     read(ninput,*) snu(i)
-                  endif
-               else if (srun_style(i) .eq. 'qm_nve') then
-                  snvt_type(i)='none'
-                  snvt_freq(i)=0
-                  read(ninput,*)
-                  read(ninput,*) xmin, xmax, nraw, vcut
-                  read(ninput,*) niter, tol, eig_tol, Nst
-               else if (srun_style(i) .eq. 'qm_nvt') then
-                  read(ninput,*) snvt_type(i), snvt_freq(i)
-                  if (snvt_type(i) .eq. 'andersen') then
-                     read(ninput,*) snu(i)
-                  endif
-                  read(ninput,*)
-                  read(ninput,*) xmin, xmax, nraw, vcut
-                  read(ninput,*) niter, tol, eig_tol, Nst
-               else
-                  write(*,*) "Error (read_input.f90): Couldn't find the run_style"
-                  write(*,*) " in the input file."
-                  stop
-               endif
-               if (snvt_type(i) .ne. 'rescale' .or. snvt_type(i) .ne. 'andersen' &
+                read(ninput,*) srun_style(i)
+                if (srun_style(i) .eq. 'nve') then
+                    snvt_type(i)='none'
+                    snvt_freq(i)=0
+                else if (srun_style(i) .eq. 'nvt') then
+                    read(ninput,*) snvt_type(i), snvt_freq(i)
+                    if (snvt_type(i) .eq. 'andersen') then
+                        read(ninput,*) snu(i)
+                    else if (snvt_type(i) .eq. 'rescale') then
+                        ! DO NOTHING
+                    endif
+                else if (srun_style(i) .eq. 'qm_nve') then
+                    snvt_type(i)='none'
+                    snvt_freq(i)=0
+                    read(ninput,*) xmin, xmax, nraw, vcut
+                    read(ninput,*) niter, tol, eig_tol, Nst
+                else if (srun_style(i) .eq. 'qm_nvt') then
+                    read(ninput,*) snvt_type(i), snvt_freq(i)
+                    if (snvt_type(i) .eq. 'andersen') then
+                        read(ninput,*) snu(i)
+                    else if (snvt_type(i) .eq. 'rescale') then
+                        ! DO NOTHING
+                    endif
+                    read(ninput,*) xmin, xmax, nraw, vcut
+                    read(ninput,*) niter, tol, eig_tol, Nst
+                else
+                    write(*,*) "Error (read_input.f90): Couldn't find the run_style"
+                    write(*,*) " in the input file."
+                    stop
+                endif
+                if (snvt_type(i) .ne. 'rescale' .or. snvt_type(i) .ne. 'andersen' &
                     .or. snvt_type(i) .ne. 'none') then
-                  write(*,*) "Error (read_input.f90): Incorrect nvt_type"
-                  stop
-               endif
-            enddo
-        else if (word .eq. 'timestep') then
-            if (n_stages .eq. 0) then
-                write(*,*) "Error (read_input.f90): Timestep defined before"
-                write(*,*) " number of stages."
-                stop
-            endif
-            do i=1,n_stages
-                read(ninput,*) sdt(i)
-            enddo
-            
-        else if (word .eq. 'run') then 
-            if (n_stages .eq. 0) then
-                write(*,*) "Error (read_input.f90): Step defined before number"
-                write(*,*) " of stages."
-                stop
-            endif
-            do i = 1, n_stages
-                read(ninput,*) snstep(i)
-            enddo
+                    write(*,*) "Error (read_input.f90): Incorrect nvt_type"
+                    stop
+                endif
+                enddo
+            else if (word .eq. 'timestep') then
+                if (n_stages .eq. 0) then
+                    write(*,*) "Error (read_input.f90): Timestep defined before"
+                    write(*,*) " number of stages."
+                    stop
+                endif
+                do i=1,n_stages
+                    read(ninput,*) sdt(i)
+                enddo
+                
+            else if (word .eq. 'run') then 
+                if (n_stages .eq. 0) then
+                    write(*,*) "Error (read_input.f90): Step defined before number"
+                    write(*,*) " of stages."
+                    stop
+                endif
+                do i = 1, n_stages
+                    read(ninput,*) snstep(i)
+                enddo
 
-        else if (word .eq. 'dump_freq') then 
-            if (n_stages .eq. 0) then
-                write(*,*) "Error (read_input.f90): Dump Frequency defined"
-                write(*,*) " before number of stages."
-                stop
-            endif
-            do i=1,n_stages
-                read(ninput,*) sdf_xyz(i), sdf_thermo(i), sdf_rest(i)
-            enddo
-        else if (word .eq. 'temperature') then 
-            if (n_stages .eq. 0) then
-                write(*,*) "Error (read_input.f90): Temperature defined before"
-                write(*,*) " the number of stages"
-                stop
-            endif
-            do i=1,n_stages
-                read(ninput,*) stemp(i)
-            enddo
-        else
-            exit
-        end if
+            else if (word .eq. 'dump_freq') then 
+                if (n_stages .eq. 0) then
+                    write(*,*) "Error (read_input.f90): Dump Frequency defined"
+                    write(*,*) " before number of stages."
+                    stop
+                endif
+                do i=1,n_stages
+                    read(ninput,*) sdf_xyz(i), sdf_thermo(i), sdf_rest(i)
+                enddo
+            else if (word .eq. 'temperature') then 
+                if (n_stages .eq. 0) then
+                    write(*,*) "Error (read_input.f90): Temperature defined before"
+                    write(*,*) " the number of stages"
+                    stop
+                endif
+                do i=1,n_stages
+                    read(ninput,*) stemp(i)
+                enddo
+            else
+                exit
+            end if
         read(ninput,*)  
     end do loopread
 

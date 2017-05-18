@@ -1,0 +1,37 @@
+read_data
+data.water
+
+bond_style
+harmonic
+
+bond_coeffs
+1 553.0 1.0
+
+angle_coeffs
+1 55.0 109.47
+
+cutoff_distance
+10.0
+
+coulomb_style
+0.2 sf
+
+force_check
+.true. 0.00001
+
+run_style
+nvt
+andersen
+
+timestep
+1.0
+
+run
+1000
+
+dump_freq
+1 1 1
+
+temperature
+298.15
+

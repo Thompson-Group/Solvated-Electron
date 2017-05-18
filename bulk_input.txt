@@ -19,31 +19,19 @@ coulomb_style
 force_check
 .true. 0.00001
 
-elements
-H
-O
-
-stages
-2
+run_style
 nvt
-rescale
-qm_nvt
-rescale
-0 20 5 12
-10 0.1 0.1 10
+andersen
 
 timestep
-1.0
 1.0
 
 run
 1000
-1000
 
 dump_freq
-1 1 1
 1 1 1
 
 temperature
 298.15
-298.15
+

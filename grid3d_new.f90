@@ -23,6 +23,9 @@
     
 
       allocate(zg(nraw)); allocate(yg(nraw)); allocate(xg(nraw))
+      allocate(fg_ex(nraw,n_atoms)); allocate(fg_ey(nraw,n_atoms))
+      allocate(fg_ez(nraw,n_atoms))
+
       del=(xmax-xmin)/nraw
 
 !      write(nout,'(A,F12.5,A)') ' DVR dx = ',del,' angstroms'
@@ -53,10 +56,13 @@
             re(2) = yg(j)
             do i = 1, nraw
                re(1) = xg(i)
-               call pseudo_e_tb(re)
+               call pseudo_e_tb(re,vtmp,fxtmp,fytmp,fztmp)
          !               if(vtmp.le.vcut) then
 !                 write(33,'(I4,4F12.5)') ngx+1, (re(ii),ii=1,3), vtmp
                   ngx = ngx + 1
+                  fg_ex(ngx,:) = fxtmp(:)
+                  fg_ey(ngx,:) = fytmp(:)
+                  fg_ez(ngx,:) = fztmp(:)
                   v_e(ngx) = vtmp
                   rg_e(ngx,1) = xg(i)
                   rg_e(ngx,2) = yg(j)
@@ -81,10 +87,13 @@
             re(1) = xg(j)
             do i = 1, nraw
                re(2) = yg(i)
-               call pseudo_e_tb(re)
+               call pseudo_e_tb(re,vtmp,fxtmp,fytmp,fztmp)
 !               if(vtmp.le.vcut) then
                   ngy = ngy + 1
-                 inygridy(ngy) = i
+                  fg_ex(ngy,:) = fxtmp(:)
+                  fg_ey(ngy,:) = fytmp(:)
+                  fg_ez(ngy,:) = fztmp(:)
+                  inygridy(ngy) = i
                   inxgridy(ngy) = j
                   inzgridy(ngy) = k
 !               endif  ! cuttoff if
@@ -103,9 +112,12 @@
             re(1) = xg(j)
             do i = 1, nraw
                re(3) = zg(i)
-               call pseudo_e_tb(re)
+               call pseudo_e_tb(re,vtmp,fxtmp,fytmp,fztmp)
 !               if(vtmp.le.vcut) then
                   ngz = ngz + 1
+                  fg_ex(ngz,:) = fxtmp(:)
+                  fg_ey(ngz,:) = fytmp(:)
+                  fg_ez(ngz,:) = fztmp(:)
                   inzgridz(ngz) = i
                   inxgridz(ngz) = j
                   inygridz(ngz) = k

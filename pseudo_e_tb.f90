@@ -14,7 +14,7 @@
 ! scalars
   real(kind=dp)    :: qo,qh,A1o,A1h,B1o,B1h,B2o,B2h,B3o,B3h,C1o
   real(kind=dp)    :: dOe,e1,e2,e3
-  real(kind=dp),parameter :: alpha_pol=7.518E7
+  real(kind=dp),parameter :: alpha_pol=9.7446_dp  !7.518E7
   integer(kind=ip) :: i,k
   real(kind=dp), external :: erf
 ! arrays
@@ -27,17 +27,27 @@
   allocate(fytmp(n_atoms))
   allocate(fztmp(n_atoms))
 
-  qo  = -0.820
-  qh  = 0.410
-  A1o = 0.575/0.53
-  A1h = 0.750/0.53
-  B1o = 0.620/0.53
-  B1h = 0.150/0.53
-  B2o = 1.000/0.53
-  B2h = 0.500/0.53
-  B3o = 0.400/0.53
-  B3h = 0.350/0.53
-  C1o = 4.400*0.53
+  qo  = -0.820_dp
+  qh  = 0.410_dp
+  A1o = 0.575_dp
+  A1h = 0.750_dp
+  B1o = 0.620_dp
+  B1h = 0.150_dp
+  B2o = 1.000_dp
+  B2h = 0.500_dp
+  B3o = 0.400_dp
+  B3h = 0.350_dp
+  C1o = 4.400_dp
+
+!  A1o = 0.575/angperau
+!  A1h = 0.750/angperau
+!  B1o = 0.620/angperau
+!  B1h = 0.150/angperau
+!  B2o = 1.000/angperau
+!  B2h = 0.500/angperau
+!  B3o = 0.400/angperau
+!  B3h = 0.350/angperau
+!  C1o = 4.400*angperau
 
   vtmp = 0.0_dp
   fxtmp = 0.0_dp

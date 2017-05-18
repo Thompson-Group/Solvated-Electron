@@ -6,34 +6,37 @@ subroutine kinetic
 
 use common_variables
 use quantum_variables
+use constants
 implicit none
 
-real(kind=ip) :: idtmp, i , j
-real(kind=dp) :: del,dtmp, pref
+integer(kind=ip) :: idtmp, i , j
+real(kind=dp) :: dtmp, pref, del_tmp
 
-pref = 1d0/(2d0*me*del**2)
+del_tmp = del/angperau
 
-ke_x = 0d0
-ke_y = 0d0
-ke_z = 0d0
+pref = 1.0_dp/(2.0_dp*me*del**2)
+
+kex = 0.0_dp
+key = 0.0_dp
+kez = 0.0_dp
 do i = 1, nraw
-    ke_x(i,i) = pref*pi**2/3d0
-    ke_y(i,i) = pref*pi**2/3d0
-    ke_z(i,i) = pref*pi**2/3d0
+    kex(i,i) = pref*pi**2/3.0_dp
+    key(i,i) = pref*pi**2/3.0_dp
+    kez(i,i) = pref*pi**2/3.0_dp
 enddo
 
 do i = 1, nraw
     do j = 1, i - 1
         idtmp = i - j
-        dtmp = dble(idtmp)
-        ke_x(i,j) = (-1d0)**idtmp*pref*2d0/dtmp**2
-        ke_x(j,i) = ke_x(i,j)
+        dtmp = real(idtmp)
+        kex(i,j) = (-1.0_dp)**idtmp*pref*2.0_dp/dtmp**2
+        kex(j,i) = kex(i,j)
         
-        ke_y(i,j) = (-1d0)**idtmp*pref*2d0/dtmp**2
-        ke_y(j,i) = ke_y(i,j)
+        key(i,j) = (-1.0_dp)**idtmp*pref*2.0_dp/dtmp**2
+        key(j,i) = key(i,j)
 
-        ke_z(i,j) = (-1d0)**idtmp*pref*2d0/dtmp**2
-        ke_z(j,i) = ke_z(i,j)
+        kez(i,j) = (-1.0_dp)**idtmp*pref*2.0_dp/dtmp**2
+        kez(j,i) = kez(i,j)
     enddo
 enddo
 

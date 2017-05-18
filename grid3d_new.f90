@@ -1,0 +1,120 @@
+!***********************************************************************************
+!     Subroutine to set up the raw 3-D grid and calculate the potential 
+!        The grid is truncated by a potential cuttoff.  
+!        This routine has x, y, z all with the same raw dimensions.
+!  Written by A. Katiyar, P. Wimalasiri, and O. Mesele
+!***********************************************************************************
+      subroutine grid(re)
+
+      use grid_index
+      use kinds
+      use ham_data
+      use constants
+      use common_variables
+      use quantum_variables
+      
+       implicit none
+!     --- Local Scalars and array ---
+       integer(kind=ip) :: i, j, k, ii
+       integer(kind=ip) :: ngx, ngy, ngz
+       real(kind=dp), dimension(:), allocatable :: zg, xg, yg
+!    ------semi - global array
+       real(kind=dp), dimension(3), intent(out) :: re
+    
+
+      allocate(zg(nraw)); allocate(yg(nraw)); allocate(xg(nraw))
+      del=(xmax-xmin)/nraw
+
+!      write(nout,'(A,F12.5,A)') ' DVR dx = ',del,' angstroms'
+
+      do i = 1, nraw
+         xg(i) = xmin + dble(i-1)*del
+     !    wx(i) = del
+      enddo
+
+      do i = 1, nraw
+         yg(i) = xmin + dble(i-1)*del
+      !   wy(i) = del
+      enddo
+
+      do i = 1, nraw
+         zg(i) = xmin + dble(i-1)*del
+       !  wz(i) = del
+      enddo
+
+!     Truncate the grid with a potential cuttoff Vcut with 
+!       x running fastest, then y, then z.
+
+      ngx = 0
+      write(6,*) ' set raw grid'
+      do k = 1, nraw
+         re(3) = zg(k)
+         do j = 1, nraw
+            re(2) = yg(j)
+            do i = 1, nraw
+               re(1) = xg(i)
+               call pseudo_e_tb(re)
+         !               if(vtmp.le.vcut) then
+!                 write(33,'(I4,4F12.5)') ngx+1, (re(ii),ii=1,3), vtmp
+                  ngx = ngx + 1
+                  v_e(ngx) = vtmp
+                  rg_e(ngx,1) = xg(i)
+                  rg_e(ngx,2) = yg(j)
+                  rg_e(ngx,3) = zg(k)
+                  inxgridx(ngx) = i
+                  inygridx(ngx) = j
+                  inzgridx(ngx) = k
+!               endif  ! cuttoff if
+            enddo ! loop over x
+         enddo ! loop over y
+      enddo ! loop over z
+      ng = ngx
+      write(6,*) ' finished first pot calc, ng = ',ng
+
+!     Truncate the grid with a potential cuttoff Vcut with 
+!       y running fastest, then x, then z.
+
+      ngy = 0
+      do k = 1, nraw
+         re(3) = zg(k)
+         do j = 1, nraw
+            re(1) = xg(j)
+            do i = 1, nraw
+               re(2) = yg(i)
+               call pseudo_e_tb(re)
+!               if(vtmp.le.vcut) then
+                  ngy = ngy + 1
+                 inygridy(ngy) = i
+                  inxgridy(ngy) = j
+                  inzgridy(ngy) = k
+!               endif  ! cuttoff if
+            enddo ! loop over y
+         enddo ! loop over x
+      enddo ! loop over z
+      write(6,*) ' finished second pot calc, ngy = ',ngy
+
+!     Truncate the grid with a potential cuttoff Vcut with 
+!       z running fastest, then x, then y.
+
+      ngz = 0
+      do k = 1, nraw
+         re(2) = yg(k)
+         do j = 1, nraw
+            re(1) = xg(j)
+            do i = 1, nraw
+               re(3) = zg(i)
+               call pseudo_e_tb(re)
+!               if(vtmp.le.vcut) then
+                  ngz = ngz + 1
+                  inzgridz(ngz) = i
+                  inxgridz(ngz) = j
+                  inygridz(ngz) = k
+!               endif  ! cuttoff if
+            enddo ! loop over z
+         enddo ! loop over x
+      enddo ! loop over y
+      write(6,*) ' finished third pot calc, ngz = ',ngz
+      
+
+      
+      end subroutine grid

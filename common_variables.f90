@@ -13,17 +13,19 @@ Module common_variables
 
   integer(kind=ip) :: n_atoms, n_bonds, n_angles, n_dih, n_imp, coul_flag
   integer(kind=ip) :: n_a_type, n_b_type, n_angle_type, n_dih_type, n_imp_type
-  real(kind=dp) :: xlo, xhi, ylo, yhi, dt, zlo, zhi, Lx, Ly, Lz, r_cut, Temp, del, alpha, v_a, v_b, v_c, v_v, v_tot
+  real(kind=dp) :: xlo, xhi, ylo, yhi, zlo, zhi, Lx, Ly, Lz, r_cut, Temp, del, alpha, v_a, v_b, v_c, v_v, v_tot
   integer(kind=ip), allocatable, dimension(:)   :: a_id, mol_id, a_type
   real(kind=dp), allocatable, dimension(:,:) :: rx, ry, rz, bond_table, angle_table, ee, ss, qq, dih_table
   real(kind=dp), allocatable, dimension(:) :: fx_v, fy_v, fz_v, fx_c, fy_c, fz_c, fx_tot, fy_tot, fz_tot
   real(kind=dp), allocatable, dimension(:) :: M, q, vx, vy, vz, ep, sig
   real(kind=dp), allocatable, dimension(:) :: x, y, z, fx_b, fy_b, fz_b, fx_a, fy_a, fz_a, k_r, req, k_ang, theta_eq
-  character(len=50) :: bond_stylee, nvt_type
-  integer(kind=ip) :: nvt_freq
-  real(kind=dp) :: nu
+  real(kind=ip) :: n_stages
+  character(len=50) :: bond_style, run_style, nvt_type
+  real(kind=dp) :: dt, temp, nu
+  real(kind=ip) :: df_xyz, df_thermo, df_rest, nstep, nvt_freq
 
-end module
+
+  end module
 
 !**************************************************************************************************************
 ! This module contains arrays and scalars that are common to several subroutines in this solve code.
@@ -49,6 +51,13 @@ module quantum_variables
 
 end module quantum_variables
 
+module input_variables
+    use kinds
+    character(len=50), dimension(5) :: srun_style, snvt_type
+    real(kind=dp), dimension(5) :: sdt, stemp, snu
+    real(kind=ip), dimension(5) :: sdf_xyz, sdf_thermo, sdf_rest, snstep, snvt_freq
+
+end module input_variables
 
 
 Module constants

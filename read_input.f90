@@ -1,8 +1,10 @@
-subroutine read_input(input_filename,df_xyz,df_thermo,df_rest, nvt_type,fc_flag,nstep)
+subroutine read_input(input_filename, fc_flag)
     use kinds
     use common_variables
-    integer(kind=ip) :: i, j, ign_int,df_xyz, df_thermo, df_rest,nstep,done
-    character(len=50) :: data_filename,word,input_filename, run_style, nvt_type, coul_tmp
+    use quantum_variables
+    use input_variables
+    integer(kind=ip) :: i, j, ign_int, done
+    character(len=50) :: data_filename, word, input_filename, coul_tmp
     logical :: restart,fc_flag
     open(unit=ninput, file=input_filename)
      
@@ -64,18 +66,30 @@ subroutine read_input(input_filename,df_xyz,df_thermo,df_rest, nvt_type,fc_flag,
                 stop
             endif
             do i=1,n_stages
-                read(ninput,*) run_style(i)
-                if (run_style(i) .eq. 'nve') then
-                    nvt_type(i)='none'
-                else if (run_style(i) .eq. 'nvt') then
-                    read(ninput,*) nvt_type(i)
-                else if (run_style(i) .eq. 'qm_nve') then
-                    nvt_type(i)='none'
-                else if (run_style(i) .eq. 'qm_nvt') then
-                    read(ninput,*) nvt_type(i)
+                read(ninput,*) srun_style(i)
+                if (srun_style(i) .eq. 'nve') then
+                    snvt_type(i)='none'
+                    snvt_freq(i)=0
+                else if (srun_style(i) .eq. 'nvt') then
+                    read(ninput,*) snvt_type(i), snvt_freq(i)
+                    if (snvt_type(i) .eq. 'andersen') then
+                        read(ninput,*) snu(i)
+                else if (srun_style(i) .eq. 'qm_nve') then
+                    snvt_type(i)='none'
+                    snvt_freq(i)=0
+                else if (srun_style(i) .eq. 'qm_nvt') then
+                    read(ninput,*) snvt_type(i), snvt_freq(i)
+                    if (snvt_type(i) .eq. 'andersen') then
+                        read(ninput,*) snu(i)
+                    endif
                 else
                     write(*,*) "Error (read_input.f90): Couldn't find the
                     run_style in the input file."
+                    stop
+                endif
+                if (snvt_type(i) .ne. 'rescale' .or. snvt_type(i) .ne. 'andersen'
+                .or. snvt_type(i) .ne. 'none') then
+                    write(*,*) "Error (read_input.f90): Incorrect nvt_type"
                     stop
                 endif
             enddo
@@ -86,7 +100,7 @@ subroutine read_input(input_filename,df_xyz,df_thermo,df_rest, nvt_type,fc_flag,
                 stop
             endif
             do i=1,n_stages
-                read(ninput,*) dt(i)
+                read(ninput,*) sdt(i)
             enddo
             
         else if (word .eq. 'run') then 
@@ -106,7 +120,7 @@ subroutine read_input(input_filename,df_xyz,df_thermo,df_rest, nvt_type,fc_flag,
                 stop
             endif
             do i=1,n_stages
-                read(ninput,*) df_xyz(i), df_thermo(i), df_rest(i)
+                read(ninput,*) sdf_xyz(i), sdf_thermo(i), sdf_rest(i)
             enddo
         else if (word .eq. 'temperature') then 
             if (n_stages .eq. 0) then
@@ -115,7 +129,7 @@ subroutine read_input(input_filename,df_xyz,df_thermo,df_rest, nvt_type,fc_flag,
                 stop
             endif
             do i=1,n_stages
-                read(ninput,*) temp(i)
+                read(ninput,*) stemp(i)
             enddo
         else
             exit

@@ -1,6 +1,7 @@
 subroutine write_restart()
     use kinds
     use common_variables
+    use constants
     implicit none
     integer(kind=ip) :: i
     real(kind=dp) :: mass

@@ -25,7 +25,6 @@ Module common_variables
   real(kind=dp) :: dt, nu
   integer(kind=ip) :: df_xyz, df_thermo, df_rest, nstep, nvt_freq
 
-
   end module
 
 !**************************************************************************************************************

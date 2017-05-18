@@ -16,16 +16,12 @@
   real(kind=dp)    :: dOe,e1,e2,e3
   real(kind=dp),parameter :: alpha_pol=7.518E7
   integer(kind=ip) :: i,k
-
+  real(kind=dp), external :: erf
 ! arrays
   real(kind=dp),allocatable,dimension(:),intent(inout) :: fxtmp,fytmp,fztmp
   real(kind=dp),dimension(3)    :: L,rOe,r 
   real(kind=dp), dimension(3), intent(in) :: re
-<<<<<<< HEAD
-  real(kind=dp), intent(inout) :: vtmp
-=======
   real(kind=dp), intent(out) :: vtmp
->>>>>>> qm_input
 
   allocate(fxtmp(n_atoms))
   allocate(fytmp(n_atoms))

@@ -20,11 +20,12 @@ Module common_variables
   real(kind=dp), allocatable, dimension(:) :: M, q, vx, vy, vz, ep, sig
   real(kind=dp), allocatable, dimension(:) :: x, y, z, fx_b, fy_b, fz_b, fx_a, fy_a, fz_a, k_r, req, k_ang, theta_eq
   real(kind=ip) :: n_stages
-  character(len=50), dimension(5) :: bond_style, run_style, nvt_type
-  real(kind=dp), dimension(5) :: dt, temp, nu
-  real(kind=ip), dimension(5) :: df_xyz, df_thermo, df_rest, nstep, nvt_freq
+  character(len=50) :: bond_style, run_style, nvt_type
+  real(kind=dp) :: dt, temp, nu
+  real(kind=ip) :: df_xyz, df_thermo, df_rest, nstep, nvt_freq
 
-end module
+
+  end module
 
 !**************************************************************************************************************
 ! This module contains arrays and scalars that are common to several subroutines in this solve code.
@@ -50,6 +51,13 @@ module quantum_variables
 
 end module quantum_variables
 
+module input_variables
+    use kinds
+    character(len=50), dimension(5) :: srun_style, snvt_type
+    real(kind=dp), dimension(5) :: sdt, stemp, snu
+    real(kind=ip), dimension(5) :: sdf_xyz, sdf_thermo, sdf_rest, snstep, snvt_freq
+
+end module input_variables
 
 
 Module constants

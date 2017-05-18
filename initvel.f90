@@ -11,11 +11,7 @@ subroutine initvel
        real(kind = dp) :: RT,mtot,sx,sy,sz,num1,num2,r1,r2,ke
        real(kind = dp) :: rsq,fac,gset,gauss,vcm_x,vcm_y,vcm_z
 
-       call random_seed(size = n)
-       allocate(seed(n))
-       call date_and_time(values=clock)
-       seed(1:) = clock(6) * (/ (i, i = 1 , n) /)
-       call random_seed(put=seed)
+       call random_seed()
 
        RT = kb * temp
        mtot = sum(M)

@@ -16,11 +16,7 @@ subroutine boltz_vel(vxb,vyb,vzb)
        real(kind = dp) :: RT,mtot,sx,sy,sz,num1,num2,r1,r2
        real(kind = dp) :: rsq,fac,gset,gauss,vxb,vyb,vzb
 
-       call random_seed(size = n)
-       allocate(seed(n))
-       call date_and_time(values=clock)
-       seed(1:) = clock(6) * (/ (i, i = 1 , n) /)
-       call random_seed(put=seed)
+       call random_seed()
 
        RT = kb * temp
 

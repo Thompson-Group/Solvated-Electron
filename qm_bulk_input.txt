@@ -26,9 +26,9 @@ O
 stages
 2
 nvt
-rescale
+rescale 5
 qm_nvt
-rescale
+rescale 5
 -5 5 16 10
 50 0.0001 4 1
 

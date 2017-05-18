@@ -9,11 +9,7 @@
      real (kind = dp) :: temp_inst,KE,vxb,vyb,vzb,numx,lambda,mass
      integer,dimension(:),allocatable :: seed
  
-     call random_seed(size=n)
-     allocate(seed(n))
-     call date_and_time(values=step)
-     seed(1:) = step*(/(j,j = 1,n)/)
-     call random_seed(put=seed)
+     call random_seed()
 
      
      if(trim(nvt_type) .eq. "rescale") then 

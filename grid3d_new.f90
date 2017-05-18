@@ -16,10 +16,11 @@
        real(kind=dp), dimension(:), allocatable :: zg, xg, yg
 !    ------semi - global array
        real(kind=dp), dimension(3) :: re
-       real(kind=dp), allocatable, dimension(:) :: fxtmp, fytmp, fztmp    
+       real(kind=dp), dimension(n_atoms) :: fxtmp, fytmp, fztmp    
        real(kind=dp) :: vtmp
  
        allocate(zg(nraw)); allocate(yg(nraw)); allocate(xg(nraw))
+
 
       del=(xmax-xmin)/real(nraw)
 
@@ -124,6 +125,7 @@
       
       !deallocate local arrays
       deallocate(zg); deallocate(yg); deallocate(xg)
+
 
       
       end subroutine grid

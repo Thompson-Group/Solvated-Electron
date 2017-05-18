@@ -18,16 +18,12 @@
   integer(kind=ip) :: i,k
   real(kind=dp), external :: erf
 ! arrays
-  real(kind=dp),allocatable,dimension(:),intent(inout) :: fxtmp,fytmp,fztmp
+  real(kind=dp),dimension(n_atoms),intent(inout) :: fxtmp,fytmp,fztmp
   real(kind=dp),dimension(3)    :: L,rOe,r 
   real(kind=dp), dimension(3), intent(in) :: re
   real(kind=dp), intent(out) :: vtmp
 
-  allocate(fxtmp(n_atoms))
-  allocate(fytmp(n_atoms))
-  allocate(fztmp(n_atoms))
-
-  qo  = -0.820_dp
+    qo  = -0.820_dp
   qh  = 0.410_dp
   A1o = 0.575_dp
   A1h = 0.750_dp

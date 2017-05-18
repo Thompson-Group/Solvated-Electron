@@ -44,6 +44,7 @@
 !  Calculate the time
 
     time = real(istep)*dt
+    write(6,*) istep
 
 !  Calculate the kinetic energy
 

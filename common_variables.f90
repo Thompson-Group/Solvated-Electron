@@ -19,7 +19,7 @@ Module common_variables
   real(kind=dp), allocatable, dimension(:) :: fx_v, fy_v, fz_v, fx_c, fy_c, fz_c, fx_tot, fy_tot, fz_tot
   real(kind=dp), allocatable, dimension(:) :: M, q, vx, vy, vz, ep, sig
   real(kind=dp), allocatable, dimension(:) :: x, y, z, fx_b, fy_b, fz_b, fx_a, fy_a, fz_a, k_r, req, k_ang, theta_eq
-  real(kind=ip) :: n_stages
+  integer(kind=ip) :: n_stages
   character(len=50) :: bond_style, run_style, nvt_type
   character(len=2), allocatable, dimension(:) :: elements
   real(kind=dp) :: dt, nu
@@ -59,7 +59,7 @@ module input_variables
     use kinds
     character(len=50), dimension(5) :: srun_style, snvt_type
     real(kind=dp), dimension(5) :: sdt, stemp, snu
-    real(kind=ip), dimension(5) :: sdf_xyz, sdf_thermo, sdf_rest, snstep, snvt_freq
+    integer(kind=ip), dimension(5) :: sdf_xyz, sdf_thermo, sdf_rest, snstep, snvt_freq
 
 end module input_variables
 
@@ -82,5 +82,7 @@ Module constants
 !  real(kind=dp), parameter :: mass_conv=2.390057361e-7_dp 
   real(kind=dp), parameter :: mass_conv=1.0_dp/4.184e-4_dp 
   real(kind=dp), parameter :: C_coul=2.40e-4_dp 
+  real(kind=dp), parameter :: me=1.0_dp
+  real(kind=dp), parameter :: angperau=0.529177249_dp
 
 end module

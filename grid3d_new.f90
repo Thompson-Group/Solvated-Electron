@@ -4,10 +4,8 @@
 !        This routine has x, y, z all with the same raw dimensions.
 !  Written by A. Katiyar, P. Wimalasiri, and O. Mesele
 !***********************************************************************************
-      subroutine grid(re)
+      subroutine grid
 
-      use kinds
-      use ham_data
       use common_variables
       use quantum_variables
       
@@ -17,13 +15,11 @@
        integer(kind=ip) :: ngx, ngy, ngz
        real(kind=dp), dimension(:), allocatable :: zg, xg, yg
 !    ------semi - global array
-       real(kind=dp), dimension(3), intent(out) :: re
+       real(kind=dp), dimension(3) :: re
        real(kind=dp), allocatable, dimension(:) :: fxtmp, fytmp, fztmp    
        real(kind=dp) :: vtmp
  
-      allocate(zg(nraw)); allocate(yg(nraw)); allocate(xg(nraw))
-      allocate(fg_ex(nraw,n_atoms)); allocate(fg_ey(nraw,n_atoms))
-      allocate(fg_ez(nraw,n_atoms))
+       allocate(zg(nraw)); allocate(yg(nraw)); allocate(xg(nraw))
 
       del=(xmax-xmin)/real(nraw)
 
@@ -126,6 +122,8 @@
       enddo ! loop over y
       write(6,*) ' finished third pot calc, ngz = ',ngz
       
+      !deallocate local arrays
+      deallocate(zg); deallocate(yg); deallocate(xg)
 
       
       end subroutine grid

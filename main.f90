@@ -11,13 +11,14 @@ program classical_md
 !************************************************************************
 
        use common_variables
+       use input_variables
 
        implicit none
 
        integer(kind = ip) :: fc_flag
-       integer(kind = ip) :: i,d,nargs
+       integer(kind = ip) :: i, istage, d, nargs
 
-       character(len=50) :: input_filename,arg
+       character(len=50) :: input_filename, arg
 
        logical :: restart,change
 
@@ -63,16 +64,54 @@ program classical_md
        write(*,*) "Opening output files"
        call output_setup('start')
 
-! write out initial thermo properties
-       
-       call thermo_dump(0)
+! check for quantum stages - if they exist, allocate arrays
+
+       call qm_allocation
 
 !*****************************START MD SIMULATION***********************!
 
        write(*,*) "Beginning Molecular Dynamics!"
+       write(*,*) " n_stages = ",n_stages
 
-       call nvt_run(nstep, df_thermo, df_xyz)
+       do istage = 1, n_stages
+          dt = sdt(istage)
+          nstep = snstep(istage)
+          temp = stemp(istage)
+          df_xyz = sdf_xyz(istage)
+          df_thermo = sdf_thermo(istage)
+          df_rest = sdf_rest(istage)
+          nvt_freq = snvt_freq(istage)
+          write(6,*) ' stage = ',istage
 
+          ! write out initial thermo properties       
+          call thermo_dump(0)
+          write(6,*) ' made it through thermo_dump '
+          write(6,*) ' srun_style(istage) = ',srun_style(istage)
+          stop
+
+          if(trim(srun_style(istage)).eq.'nve') then
+
+             call nve_run
+
+          elseif(trim(srun_style(istage)).eq.'nvt') then
+
+             nvt_type = snvt_type(istage)
+             call nvt_run
+
+          elseif(trim(srun_style(istage)).eq.'qm_nve') then
+
+             call qmsetup
+             call qm_nve_run
+
+          elseif(trim(srun_style(istage)).eq.'qm_nvt') then
+
+             call qmsetup
+             nvt_type = snvt_type(istage)
+             call qm_nvt_run
+            
+          endif
+
+       enddo
 
 ! close output files
 

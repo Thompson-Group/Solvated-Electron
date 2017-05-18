@@ -21,6 +21,7 @@ Module common_variables
   real(kind=dp), allocatable, dimension(:) :: x, y, z, fx_b, fy_b, fz_b, fx_a, fy_a, fz_a, k_r, req, k_ang, theta_eq
   real(kind=ip) :: n_stages
   character(len=50) :: bond_style, run_style, nvt_type
+  character(len=2), allocatable, dimension(:) :: elements
   real(kind=dp) :: dt, temp, nu
   real(kind=ip) :: df_xyz, df_thermo, df_rest, nstep, nvt_freq
 

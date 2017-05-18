@@ -57,6 +57,11 @@ subroutine read_input(input_filename, fc_flag)
             end if
         else if (word .eq. 'force_check') then
             read(ninput,*) fc_flag,del
+        else if (word .eq. 'elements') then
+            allocate(elements(n_a_type))
+            do i=1,n_a_type
+                read(ninput,*) elements(i)
+            enddo
         else if (word .eq. 'stages') then
             read(ninput,*) n_stages
             if (n_stages .gt. 5) then

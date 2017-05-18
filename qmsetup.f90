@@ -20,6 +20,7 @@ call grid(re)
 allocate(Eigvec(niter,niter))
 allocate(Eigval(niter))
 allocate(krylov-vectors(0:niter,ng))
+allocate(indxx(ng))
 
 call kinetic
 call rankyx

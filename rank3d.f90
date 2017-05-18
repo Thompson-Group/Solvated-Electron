@@ -12,7 +12,7 @@
       call indexx(comparyx)
 
       do j = 1, ng
-         indxj = indx(j)
+         indxj = indxx(j)
          irankyx(indxj) = j
       enddo
 
@@ -32,7 +32,7 @@
       call indexx(comparzx)
 
       do j = 1, ng
-         indxj = indx(j)
+         indxj = indxx(j)
          irankzx(indxj) = j
       enddo
 

@@ -4,12 +4,13 @@
       subroutine planczos(try)
       
 !need to add actiter, niter, tol, n_eigtol, Eigval, Eigvec, Krylov_vectors to quantum_variables      
+      use common_variables
       use quantum_variables
       implicit none
 
-      integer(kind=ip) :: n, m, i, j, info
+      integer(kind=ip) :: n, k, i, j, info
       real(kind=dp), dimension(ng) :: vect, vectp1, try
-      real(kind=dp) ::  y, len, dummy, tol, eigval_old, error
+      real(kind=dp) ::  ytmp, len, dummy, eigval_old, error
       real(kind=dp), dimension(niter) :: Eigvals
       real(kind=dp), dimension(0:niter,0:niter) :: h
       real(kind=dp), dimension(niter,niter) :: Areal
@@ -48,30 +49,30 @@
          end do
          
          ! Form the Hamiltonian matrix in the Krylov basis
-         do m = 0, n-1
+         do k = 0, n-1
             
-            h(m, n-1) = 0.0_dp
+            h(k, n-1) = 0.0_dp
 
             do i = 1, ng
-               h(m,n-1) = h(m,n-1) + Krylov_vectors(m,i)*Krylov_vectors(n,i)
+               h(k,n-1) = h(k,n-1) + Krylov_vectors(k,i)*Krylov_vectors(n,i)
             end do
             
-            h(n-1, m) = h(m, n-1)
+            h(n-1, k) = h(k, n-1)
             
          end do
          
 !     Orthogonalize vectors
          
-         do m = 0, n-1
+         do k = 0, n-1
             
-            y = 0.0_dp
+            ytmp = 0.0_dp
             
             do i = 1, ng
-               y = y + Krylov_vectors(m,i)*Krylov_vectors(n,i)
+               ytmp = ytmp + Krylov_vectors(k,i)*Krylov_vectors(n,i)
             end do
             
             do i = 1, ng
-               Krylov_vectors(n,i) = Krylov_vectors(n,i) - y * Krylov_vectors(m,i)
+               Krylov_vectors(n,i) = Krylov_vectors(n,i) - ytmp * Krylov_vectors(k,i)
             end do
             
          end do
@@ -97,8 +98,8 @@
             end do
          end do
          
-         if (n.eq.niter.or.n.gt.n_eigtol) then
-            call dsyev('V', 'L', n, Areal, maxiter, Eigvals,work, 3*maxiter, info)
+         if (n.eq.niter.or.n.gt.eig_tol) then
+            call dsyev('V', 'L', n, Areal, niter, Eigvals,work, 3*niter, info)
             do i = n, 1, -1
                Eigval(i) = Eigvals(i)
             enddo
@@ -107,9 +108,9 @@
                   Eigvec(i,j) = Areal(i,j)
                enddo
             enddo
-            error = dabs((Eigval(n_eigtol)-eigval_old)/Eigval(n_eigtol))
+            error = abs((Eigval(eig_tol)-eigval_old)/Eigval(eig_tol))
             if(error.lt.tol) goto 10
-            eigval_old = Eigval(n_eigtol)
+            eigval_old = Eigval(eig_tol)
          end if
       end do
             

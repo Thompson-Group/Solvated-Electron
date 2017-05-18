@@ -72,26 +72,26 @@ subroutine read_input(input_filename, fc_flag)
             endif
             do i = 1, n_stages
                 read(ninput,*) srun_style(i)
-                if (srun_style(i) .eq. 'nve') then
+                if (trim(srun_style(i)) .eq. 'nve') then
                     snvt_type(i)='none'
                     snvt_freq(i)=0
-                else if (srun_style(i) .eq. 'nvt') then
+                else if (trim(srun_style(i)) .eq. 'nvt') then
                     read(ninput,*) snvt_type(i), snvt_freq(i)
-                    if (snvt_type(i) .eq. 'andersen') then
+                    if (trim(snvt_type(i)) .eq. 'andersen') then
                         read(ninput,*) snu(i)
-                    else if (snvt_type(i) .eq. 'rescale') then
+                    else if (trim(snvt_type(i)) .eq. 'rescale') then
                         ! DO NOTHING
                     endif
-                else if (srun_style(i) .eq. 'qm_nve') then
+                else if (trim(srun_style(i)) .eq. 'qm_nve') then
                     snvt_type(i)='none'
                     snvt_freq(i)=0
                     read(ninput,*) xmin, xmax, nraw, vcut
                     read(ninput,*) niter, tol, eig_tol, Nst
-                else if (srun_style(i) .eq. 'qm_nvt') then
+                else if (trim(srun_style(i)) .eq. 'qm_nvt') then
                     read(ninput,*) snvt_type(i), snvt_freq(i)
-                    if (snvt_type(i) .eq. 'andersen') then
+                    if (trim(snvt_type(i)) .eq. 'andersen') then
                         read(ninput,*) snu(i)
-                    else if (snvt_type(i) .eq. 'rescale') then
+                    else if (trim(snvt_type(i)) .eq. 'rescale') then
                         ! DO NOTHING
                     endif
                     read(ninput,*) xmin, xmax, nraw, vcut
@@ -101,9 +101,10 @@ subroutine read_input(input_filename, fc_flag)
                     write(*,*) " in the input file."
                     stop
                 endif
-                if (snvt_type(i) .ne. 'rescale' .or. snvt_type(i) .ne. 'andersen' &
-                    .or. snvt_type(i) .ne. 'none') then
-                    write(*,*) "Error (read_input.f90): Incorrect nvt_type"
+                if (trim(snvt_type(i)) .ne. 'rescale' .and. trim(snvt_type(i)) .ne. 'andersen' &
+                    .and. trim(snvt_type(i)) .ne. 'none') then
+                    write(*,*) "Error (read_input.f90): Incorrect nvt_type" &
+                    ,snvt_type(i)
                     stop
                 endif
                 enddo
@@ -148,7 +149,6 @@ subroutine read_input(input_filename, fc_flag)
             else
                 exit
             end if
-        read(ninput,*)  
     end do loopread
 
        

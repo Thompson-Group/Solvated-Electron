@@ -42,8 +42,7 @@ program classical_md
 ! configurations
 
        write(*,*) "Reading inputs"
-       call read_input(input_filename,df_xyz,df_thermo,df_rest,fc_flag,&
-                       nstep)
+       call read_input(input_filename,fc_flag)
 
 ! set initial velocites if not a restart
 

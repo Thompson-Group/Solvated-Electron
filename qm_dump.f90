@@ -10,5 +10,6 @@
 
    write(neigs, '(21F12.5)') real(i)*dt, (Eigval(j)*evperau,j=1,10)
    write(nrg, '(2F12.5)') real(i)*dt, sqrt(r2_e_avg)*angperau
+   write(nlanc, '(F12.5,I4)') real(i)*dt, actiter
 
 end subroutine qm_dump

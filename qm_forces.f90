@@ -9,11 +9,11 @@
 
      use common_variables
      use quantum_variables
+     use constants
      implicit none
 
      integer(kind=ip) :: i 
       real(kind=dp), dimension(ng) :: try
-     real(kind=dp), dimension(n_atoms) :: fx_avg, fy_avg, fz_avg
 
      ! First calculate the classical forces
      call forces
@@ -27,30 +27,23 @@
      call initial_guess(try)
 
      ! Then diagonalize
-               !     if(trim(diag_type).eq.'lanczos') then
      call planczos(try)
-               !     elseif(trim(diag_type).eq.'direct') then
-               !        call direct_diag(try)
-               !     endif
+
 
 ! Then average the forces
-     call qm_force_avg(fx_avg,fy_avg,fz_avg)
+     call qm_force_avg
 
 !     write(6,*) 'qm_forces, Eig_1 = ',Eigval(1),' rg = ',r2_e_avg
 
 
      ! Add the quantum forces to the classical ones (overwrite the latter)
 
-     write(6,'(A,3F12.5)') 'Before',fx_tot(1), fy_tot(1), fz_tot(1)
-     do i = 1, n_atoms
-        fx_tot(i) = fx_tot(i) + fx_avg(i)
-        fy_tot(i) = fy_tot(i) + fy_avg(i)
-        fz_tot(i) = fz_tot(i) + fz_avg(i)
-     enddo
-     write(6,'(A,3F12.5)') 'After',fx_tot(1), fy_tot(1), fz_tot(1)
+     fx_tot = fx_tot + fx_q
+     fy_tot = fy_tot + fy_q
+     fz_tot = fz_tot + fz_q
 
-     ! Add the average potential of the electron to the classical electrostatic one (overwrite the latter)
-     v_c = v_c + v_e_avg
+     ! Add the eigenvalue  of the electron to the classical electrostatic one (overwrite the latter)
+     v_q = Eigval(Nst)*kcalperau
 
    end subroutine qm_forces
    
@@ -58,6 +51,10 @@
 !
 !  This subroutine updates the solvated electron potential vector, v_e by
 !  recalculating it on a pre-determined grid. It does NOT determine the grid
+!
+!    Note that pseudo_e_tb returns the potential in kcal/mol 
+!     Thus, v_e is converted to atomic units before use in diagonalization
+!     Also, the forces are in kcal/mol/Angs.
 !
 
    subroutine v_e_update
@@ -123,7 +120,7 @@
 !   of gyration.
 !
 
-   subroutine qm_force_avg(fx_avg,fy_avg,fz_avg)
+   subroutine qm_force_avg
 
      use common_variables
      use quantum_variables
@@ -134,12 +131,11 @@
      real(kind=dp) :: psi2tmp, norm
      real(kind=dp), dimension(3) :: re
      real(kind=dp), dimension(ng) :: psi
-     real(kind=dp), dimension(n_atoms) :: fx_avg, fy_avg, fz_avg
 
      ! First calculate the wavefunction of the Nst state
 
      psi = 0.0_dp; norm = 0.0_dp
-     fx_avg = 0.0_dp; fy_avg = 0.0_dp; fz_avg = 0.0_dp
+     fx_q = 0.0_dp; fy_q = 0.0_dp; fz_q = 0.0_dp
      v_e_avg = 0.0_dp; r_e_avg = 0.0_dp
 
      do i = 1, ng
@@ -155,9 +151,9 @@
         r_e_avg(:) = r_e_avg(:) + rg_e(i,:)*psi2tmp
 
         do j = 1, n_atoms
-           fx_avg(j) = fx_avg(j) + fg_ex(i,j)*psi2tmp
-           fy_avg(j) = fy_avg(j) + fg_ey(i,j)*psi2tmp
-           fz_avg(j) = fz_avg(j) + fg_ez(i,j)*psi2tmp
+           fx_q(j) = fx_q(j) + fg_ex(i,j)*psi2tmp
+           fy_q(j) = fy_q(j) + fg_ey(i,j)*psi2tmp
+           fz_q(j) = fz_q(j) + fg_ez(i,j)*psi2tmp
         enddo
 
      enddo
@@ -165,10 +161,6 @@
      ! convert the units of the potential and force
      v_e_avg = v_e_avg*kcalperau
      
-     fx_avg = fx_avg*kcalperau/angperau
-     fy_avg = fy_avg*kcalperau/angperau
-     fz_avg = fz_avg*kcalperau/angperau
-
      ! Calculate the radius of gyration (there must be a way to do this in the loop above)
      r2_e_avg = 0.0_dp
      do i = 1, ng

@@ -60,6 +60,10 @@ subroutine read_input(input_filename, fc_flag)
             end if
         else if (word .eq. 'force_check') then
             read(ninput,*) fc_flag, delta
+            if(fc_flag) then
+               fc_cnt = 0
+               qfc_cnt = 0
+            endif
         else if (word .eq. 'elements') then
             allocate(elements(n_a_type))
             do i=1,n_a_type

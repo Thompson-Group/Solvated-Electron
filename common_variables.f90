@@ -13,17 +13,19 @@ Module common_variables
 
   integer(kind=ip) :: n_atoms, n_bonds, n_angles, n_dih, n_imp, coul_flag
   integer(kind=ip) :: n_a_type, n_b_type, n_angle_type, n_dih_type, n_imp_type
-  real(kind=dp) :: xlo, xhi, ylo, yhi, zlo, zhi, Lx, Ly, Lz, r_cut, Temp, delta, alpha, v_a, v_b, v_c, v_v, v_tot
+  real(kind=dp) :: xlo, xhi, ylo, yhi, zlo, zhi, Lx, Ly, Lz, r_cut, Temp, delta, alpha, v_a, v_b, v_c, v_v, v_q, v_tot
   integer(kind=ip), allocatable, dimension(:)   :: a_id, mol_id, a_type
   real(kind=dp), allocatable, dimension(:,:) :: rx, ry, rz, bond_table, angle_table, ee, ss, qq, dih_table
   real(kind=dp), allocatable, dimension(:) :: fx_v, fy_v, fz_v, fx_c, fy_c, fz_c, fx_tot, fy_tot, fz_tot
   real(kind=dp), allocatable, dimension(:) :: M, q, vx, vy, vz, ep, sig
   real(kind=dp), allocatable, dimension(:) :: x, y, z, fx_b, fy_b, fz_b, fx_a, fy_a, fz_a, k_r, req, k_ang, theta_eq
+  real(kind=dp), allocatable, dimension(:) :: fx_q, fy_q, fz_q
   integer(kind=ip) :: n_stages
   character(len=50) :: bond_style, run_style, nvt_type
   character(len=2), allocatable, dimension(:) :: elements
   real(kind=dp) :: dt, nu
   integer(kind=ip) :: df_xyz, df_thermo, df_rest, nstep, nvt_freq
+  integer(kind=ip) :: fc_cnt, qfc_cnt
 
   end module
 
@@ -76,7 +78,8 @@ Module constants
   use kinds
   Implicit none
 
-  integer, parameter :: nxyz=20, nthermo=21, neigs=41, nrg=42, ndata=30, ninput=31, nrest=22
+  integer, parameter :: nxyz=20, nthermo=21, ndata=30, ninput=31, nrest=22
+  integer, parameter :: neigs=41, nrg=42, nlanc=43
   real(kind=dp) :: pi = 4.0_dp*atan(1.0_dp)
   real(kind=dp), parameter :: kb=0.0019872041_dp
 !  real(kind=dp), parameter :: mass_conv=2.390057361e-7_dp 

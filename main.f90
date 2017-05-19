@@ -15,12 +15,11 @@ program classical_md
 
        implicit none
 
-       integer(kind = ip) :: fc_flag
        integer(kind = ip) :: i, istage, d, nargs
 
        character(len=50) :: input_filename, arg
 
-       logical :: restart,change
+       logical :: restart, change, fc_flag
 
 ! read inputs from command line
 
@@ -44,7 +43,6 @@ program classical_md
        write(*,*) "Reading inputs"
        call read_input(input_filename,fc_flag)
 
-
 ! calculate force of initial configuration
 
        write(*,*) "Calculating initial forces"
@@ -53,7 +51,7 @@ program classical_md
 ! do a force check
 
        write(*,*) "Doing a force check"
-       call force_check
+       if(fc_flag) call force_check
 
 ! open output files
 

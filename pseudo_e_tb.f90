@@ -14,7 +14,7 @@
 
 ! scalars
   real(kind=dp)    :: dHe, dOe, e1, e2, e3, two_by_rtpi
-  real(kind=dp)    :: Afac, B2fac, B3fac
+  real(kind=dp)    :: Afac, B2fac, B3fac, fmag
   integer(kind=ip) :: i, k
 
 ! arrays
@@ -57,11 +57,12 @@
       
               ! calculate the polarization part
               vtmp = vtmp - 0.5_dp*alpha/(dOe**2 + C1o**2)**2
-
+                           
               ! the force looks like
-              fxtmp(i) = fxtmp(i) + 2.0_dp*alpha*rOe(1)/(dOe**2 + C1o**2)**3
-              fytmp(i) = fytmp(i) + 2.0_dp*alpha*rOe(2)/(dOe**2 + C1o**2)**3
-              fztmp(i) = fztmp(i) + 2.0_dp*alpha*rOe(3)/(dOe**2 + C1o**2)**3              
+              fmag = 2.0_dp*alpha/(dOe**2 + C1o**2)**3
+              fxtmp(i) = fxtmp(i) + rOe(1)*fmag
+              fytmp(i) = fytmp(i) + rOe(2)*fmag
+              fztmp(i) = fztmp(i) + rOe(3)*fmag
 
               ! calculate the electrostatics
   
@@ -74,15 +75,12 @@
               Afac = two_by_rtpi*A1o*exp(-(A1o*dOe)**2)
               B2fac = two_by_rtpi*B2o*exp(-(B2o*dOe)**2)
               B3fac = two_by_rtpi*B3o*exp(-(B3o*dOe)**2)
+              fmag = qo*(e1/dOe**3 - Afac/dOe**2)      & 
+                   - B1o*( (e2 - e3)/dOe**3 - (B2fac - B3fac)/dOe**2 ) 
 
-              fxtmp(i) = fxtmp(i) + rOe(1)*( qo*(e1/dOe**3 - Afac/dOe**2)      & 
-                   - B1o*( (e2 - e3)/dOe**3 - (B2fac - B3fac)/dOe**2 ) )
-
-              fytmp(i) = fytmp(i) + rOe(2)*( qo*(e1/dOe**3 - Afac/dOe**2)      &             
-                   - B1o*( (e2 - e3)/dOe**3 - (B2fac - B3fac)/dOe**2) )
-
-              fztmp(i) = fztmp(i) + rOe(3)*( qo*(e1/dOe**3 - Afac/dOe**2)      &             
-                   - B1o*( (e2 - e3)/dOe**3 - (B2fac - B3fac)/dOe**2) )
+              fxtmp(i) = fxtmp(i) + rOe(1)*fmag
+              fytmp(i) = fytmp(i) + rOe(2)*fmag
+              fztmp(i) = fztmp(i) + rOe(3)*fmag
 
            elseif (n_a_type .eq. 2) then   ! hydrogen atom
 
@@ -97,17 +95,15 @@
               Afac = two_by_rtpi*A1h*exp(-(A1h*dHe)**2)
               B2fac = two_by_rtpi*B2h*exp(-(B2h*dHe)**2)
               B3fac = two_by_rtpi*B3h*exp(-(B3h*dHe)**2)
+              fmag = qh*(e1/dHe**3 - Afac/dHe**2)      &
+                   - B1h*( (e2 - e3)/dHe**3 - (B2fac - B3fac)/dHe**2 )
 
-              fxtmp(i) = fxtmp(i) + rHe(1)*( qh*(e1/dHe**3 - Afac/dHe**2)      &             
-                   - B1h*( (e2 - e3)/dHe**3 - (B2fac - B3fac)/dHe**2 ) )
-              
-              fytmp(i) = fytmp(i) + rHe(2)*( qh*(e1/dHe**3 - Afac/dHe**2)      &
-                   - B1h*( (e2 - e3)/dHe**3 - (B2fac - B3fac)/dHe**2 ) )
-              
-              fztmp(i) = fztmp(i) + rHe(3)*( qh*(e1/dHe**3 - Afac/dHe**2)      &
-                   - B1h*( (e2 - e3)/dHe**3 - (B3fac - B3fac)/dHe**2 ) )
-           endif
-        endif
+              fxtmp(i) = fxtmp(i) + rHe(1)*fmag              
+              fytmp(i) = fytmp(i) + rHe(2)*fmag
+              fztmp(i) = fztmp(i) + rHe(3)*fmag
+
+           endif ! differentiate O from H
+        endif ! check if within cuttoff radius
   enddo
 
 return

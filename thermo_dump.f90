@@ -18,9 +18,13 @@
        open(nthermo,file='eners.dat')
        open(neigs,file='eigs.dat')
        open(nrg,file='rg.dat')
+       open(nlanc,file='iterations.dat')
     elseif(trim(oflag).eq.'end') then
        close(nxyz)
        close(nthermo)
+       close(neigs)
+       close(nrg)
+       close(nlanc)
     endif
 
    End Subroutine output_setup

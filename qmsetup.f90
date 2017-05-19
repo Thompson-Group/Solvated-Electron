@@ -11,6 +11,7 @@
      use constants
 
      implicit none
+     integer(kind=ip) :: i
      real(kind=dp) , dimension(ng) :: try
 
      call grid
@@ -24,11 +25,17 @@
      call rankyx
      call rankzx
      call looplims
-     call graphgrid
+!     call graphgrid
      try = 1.0_dp/(sqrt(real(ng)))
 
      call planczos(try)
      !call direct_diag
+     write(6,*) ' actiter = ',actiter
+     do i = 1, eig_tol
+        write(6,*) i, Eigval(i)*evperau
+     enddo
+
+     call qm_forces
 
    end subroutine qmsetup
 

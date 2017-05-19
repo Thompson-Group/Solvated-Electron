@@ -3,6 +3,9 @@ subroutine read_input(input_filename, fc_flag)
     use common_variables
     use quantum_variables
     use input_variables
+    use constants
+    implicit none
+
     integer(kind=ip) :: i, j, ign_int, done
     character(len=50) :: data_filename, word, input_filename, coul_tmp
     logical :: restart,fc_flag

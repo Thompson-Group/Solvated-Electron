@@ -36,11 +36,18 @@
 ! Then average the forces
      call qm_force_avg(fx_avg,fy_avg,fz_avg)
 
+!     write(6,*) 'qm_forces, Eig_1 = ',Eigval(1),' rg = ',r2_e_avg
+
+
      ! Add the quantum forces to the classical ones (overwrite the latter)
 
-     fx_tot = fx_tot + fx_avg
-     fy_tot = fy_tot + fy_avg
-     fz_tot = fz_tot + fz_avg
+     write(6,'(A,3F12.5)') 'Before',fx_tot(1), fy_tot(1), fz_tot(1)
+     do i = 1, n_atoms
+        fx_tot(i) = fx_tot(i) + fx_avg(i)
+        fy_tot(i) = fy_tot(i) + fy_avg(i)
+        fz_tot(i) = fz_tot(i) + fz_avg(i)
+     enddo
+     write(6,'(A,3F12.5)') 'After',fx_tot(1), fy_tot(1), fz_tot(1)
 
      ! Add the average potential of the electron to the classical electrostatic one (overwrite the latter)
      v_c = v_c + v_e_avg
@@ -57,6 +64,7 @@
 
      use common_variables
      use quantum_variables
+     use constants
      implicit none
 
      integer(kind=ip) :: i 
@@ -74,6 +82,8 @@
         fg_ez(i,:) = fztmp(:)
 
      enddo
+     v_e = v_e/kcalperau
+
    end subroutine v_e_update
 
 
@@ -117,6 +127,7 @@
 
      use common_variables
      use quantum_variables
+     use constants
      implicit none
 
      integer(kind=ip) :: i, j, k
@@ -150,6 +161,13 @@
         enddo
 
      enddo
+
+     ! convert the units of the potential and force
+     v_e_avg = v_e_avg*kcalperau
+     
+     fx_avg = fx_avg*kcalperau/angperau
+     fy_avg = fy_avg*kcalperau/angperau
+     fz_avg = fz_avg*kcalperau/angperau
 
      ! Calculate the radius of gyration (there must be a way to do this in the loop above)
      r2_e_avg = 0.0_dp

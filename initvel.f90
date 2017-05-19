@@ -6,7 +6,6 @@ subroutine initvel
        implicit none
 
        integer(kind = ip) :: clock(8),i
-       integer :: n
        integer,allocatable,dimension(:) :: seed
        real(kind = dp) :: RT,mtot,sx,sy,sz,num1,num2,r1,r2,ke
        real(kind = dp) :: rsq,fac,gset,gauss,vcm_x,vcm_y,vcm_z
@@ -15,10 +14,6 @@ subroutine initvel
 
        RT = kb * temp
        mtot = sum(M)
-       write(6,*) ' T  = ',temp
-       write(6,*) ' RT = ',RT
-       write(6,*) ' mtot = ',mtot
-       write(52,*) M
 
 ! loop over all atoms
 

@@ -8,6 +8,7 @@
 
       use common_variables
       use quantum_variables
+      use constants
       
        implicit none
 !     --- Local Scalars and array ---
@@ -20,6 +21,7 @@
        real(kind=dp) :: vtmp
  
        allocate(zg(nraw)); allocate(yg(nraw)); allocate(xg(nraw))
+
 
 
       del=(xmax-xmin)/real(nraw)
@@ -45,7 +47,6 @@
 !       x running fastest, then y, then z.
 
       ngx = 0
-      write(6,*) ' set raw grid'
       do k = 1, nraw
          re(3) = zg(k)
          do j = 1, nraw
@@ -53,7 +54,7 @@
             do i = 1, nraw
                re(1) = xg(i)
                call pseudo_e_tb(re,vtmp,fxtmp,fytmp,fztmp)
-         !               if(vtmp.le.vcut) then
+               if(vtmp.le.vcut) then
 !                 write(33,'(I4,4F12.5)') ngx+1, (re(ii),ii=1,3), vtmp
                   ngx = ngx + 1
                   fg_ex(ngx,:) = fxtmp(:)
@@ -66,12 +67,11 @@
                   inxgridx(ngx) = i
                   inygridx(ngx) = j
                   inzgridx(ngx) = k
-!               endif  ! cuttoff if
+               endif  ! cuttoff if
             enddo ! loop over x
          enddo ! loop over y
       enddo ! loop over z
       ng = ngx
-      write(6,*) ' finished first pot calc, ng = ',ng
 
 !     Truncate the grid with a potential cuttoff Vcut with 
 !       y running fastest, then x, then z.
@@ -84,7 +84,7 @@
             do i = 1, nraw
                re(2) = yg(i)
                call pseudo_e_tb(re,vtmp,fxtmp,fytmp,fztmp)
-!               if(vtmp.le.vcut) then
+               if(vtmp.le.vcut) then
                   ngy = ngy + 1
                   fg_ex(ngy,:) = fxtmp(:)
                   fg_ey(ngy,:) = fytmp(:)
@@ -92,11 +92,10 @@
                   inygridy(ngy) = i
                   inxgridy(ngy) = j
                   inzgridy(ngy) = k
-!               endif  ! cuttoff if
+               endif  ! cuttoff if
             enddo ! loop over y
          enddo ! loop over x
       enddo ! loop over z
-      write(6,*) ' finished second pot calc, ngy = ',ngy
 
 !     Truncate the grid with a potential cuttoff Vcut with 
 !       z running fastest, then x, then y.
@@ -109,7 +108,7 @@
             do i = 1, nraw
                re(3) = zg(i)
                call pseudo_e_tb(re,vtmp,fxtmp,fytmp,fztmp)
-!               if(vtmp.le.vcut) then
+               if(vtmp.le.vcut) then
                   ngz = ngz + 1
                   fg_ex(ngz,:) = fxtmp(:)
                   fg_ey(ngz,:) = fytmp(:)
@@ -117,15 +116,15 @@
                   inzgridz(ngz) = i
                   inxgridz(ngz) = j
                   inygridz(ngz) = k
-!               endif  ! cuttoff if
+               endif  ! cuttoff if
             enddo ! loop over z
          enddo ! loop over x
       enddo ! loop over y
-      write(6,*) ' finished third pot calc, ngz = ',ngz
       
       !deallocate local arrays
       deallocate(zg); deallocate(yg); deallocate(xg)
 
-
+      write(6,*) ' In grid: ng = ',ng,' ngy = ',ngy,' ngz = ',ngz
+      v_e = v_e/kcalperau
       
       end subroutine grid

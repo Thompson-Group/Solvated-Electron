@@ -16,6 +16,8 @@
     if(trim(oflag).eq.'start') then
        open(nxyz,file='traj.xyz')
        open(nthermo,file='eners.dat')
+       open(neigs,file='eigs.dat')
+       open(nrg,file='rg.dat')
     elseif(trim(oflag).eq.'end') then
        close(nxyz)
        close(nthermo)

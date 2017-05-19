@@ -14,7 +14,7 @@ real(kind=dp) :: dtmp, pref, del_tmp
 
 del_tmp = del/angperau
 
-pref = 1.0_dp/(2.0_dp*me*del**2)
+pref = 1.0_dp/(2.0_dp*me*del_tmp**2)
 
 kex = 0.0_dp
 key = 0.0_dp

@@ -49,7 +49,7 @@ module quantum_variables
     real(kind=dp), allocatable, dimension(:,:) :: rg_e, Eigvec, Krylov_vectors
     real(kind=dp), allocatable, dimension(:,:) :: kex, key, kez, fg_ex, fg_ey, fg_ez
     real(kind=dp), dimension(3) :: r_e_avg
-    real(kind=dp) :: xmin, xmax, del, tol, v_e_avg
+    real(kind=dp) :: xmin, xmax, del, tol, vcut, v_e_avg
     integer(kind=ip) :: nraw, eig_tol
     real(kind=dp) :: r2_e_avg
 
@@ -76,7 +76,7 @@ Module constants
   use kinds
   Implicit none
 
-  integer, parameter :: nxyz=20, nthermo=21, ndata=30, ninput=31, nrest=22
+  integer, parameter :: nxyz=20, nthermo=21, neigs=41, nrg=42, ndata=30, ninput=31, nrest=22
   real(kind=dp) :: pi = 4.0_dp*atan(1.0_dp)
   real(kind=dp), parameter :: kb=0.0019872041_dp
 !  real(kind=dp), parameter :: mass_conv=2.390057361e-7_dp 
@@ -84,5 +84,32 @@ Module constants
   real(kind=dp), parameter :: C_coul=2.40e-4_dp 
   real(kind=dp), parameter :: me=1.0_dp
   real(kind=dp), parameter :: angperau=0.529177249_dp
+  real(kind=dp), parameter :: kcalperev=23.0605_dp
+  real(kind=dp), parameter :: evperau=27.2113961_dp  
+  real(kind=dp), parameter :: kcalperau=kcalperev*evperau
+
+end module
+
+
+Module pseudo_constants
+!**************************************************************************************************************
+! This module contains constants and the numbers used for output files.
+! These variables do not need to be declared in other subroutines.
+! use this module as needed in other subroutines
+!Written by Ward Thompson
+! Hackathon Friday May 19, 2017                                                                              
+!**************************************************************************************************************  
+
+  use kinds
+  Implicit none
+
+  ! Parameters are for the Turi-Borgis potential [JCP 117, 6186 (2002)] and currently in atomic units
+  real(kind=dp),parameter :: alpha_pol=9.7446_dp
+  real(kind=dp),parameter :: qo  = -0.820_dp, qh  = 0.410_dp
+  real(kind=dp),parameter :: A1o = 0.575_dp, A1h = 0.750_dp
+  real(kind=dp),parameter :: B1o = 0.620_dp, B1h = 0.150_dp
+  real(kind=dp),parameter :: B2o = 1.000_dp, B2h = 0.500_dp
+  real(kind=dp),parameter :: B3o = 0.400_dp, B3h = 0.350_dp
+  real(kind=dp),parameter :: C1o = 4.400_dp
 
 end module

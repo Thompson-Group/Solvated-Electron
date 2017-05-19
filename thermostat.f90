@@ -5,12 +5,10 @@
      implicit none
 
      integer (kind = ip) :: i,j,step(8)
-     integer :: n
      real (kind = dp) :: temp_inst,KE,vxb,vyb,vzb,numx,lambda,mass
      integer,dimension(:),allocatable :: seed
  
      call random_seed()
-
      
      if(trim(nvt_type) .eq. "rescale") then 
 

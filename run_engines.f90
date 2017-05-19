@@ -61,6 +61,7 @@
     subroutine qm_nvt_run
 
       use common_variables
+      use quantum_variables
       implicit none
 
       integer(kind=ip) :: i
@@ -68,7 +69,7 @@
       do i = 1, nstep
          
          ! update positions in first stage of VV integrator
-         call velocity_verlet
+         call qm_velocity_verlet
          
          ! calculate thermodynamic properties            
          if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)
@@ -91,6 +92,7 @@
     subroutine qm_nve_run
 
       use common_variables
+      use quantum_variables
       implicit none
 
       integer(kind=ip) :: i
@@ -98,7 +100,7 @@
       do i = 1, nstep
 
          ! update positions in first stage of VV integrator
-         call velocity_verlet
+         call qm_velocity_verlet
          
          ! calculate thermodynamic properties            
          if (mod(i,df_thermo) .eq. 0) call thermo_dump(i)

@@ -44,9 +44,6 @@ program classical_md
        write(*,*) "Reading inputs"
        call read_input(input_filename,fc_flag)
 
-! set initial velocites if not a restart
-
-       if (.not. restart) call initvel
 
 ! calculate force of initial configuration
 
@@ -82,6 +79,9 @@ program classical_md
           nvt_freq = snvt_freq(istage)
           write(6,*) ' stage = ',istage
 
+          ! set initial velocites if not a restart
+          if (.not. restart) call initvel
+
           ! write out initial thermo properties       
           call thermo_dump(0)
           write(6,*) ' made it through thermo_dump '
@@ -111,6 +111,8 @@ program classical_md
           endif
 
        enddo
+
+       call qmsetup
 
 ! close output files
 

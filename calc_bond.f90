@@ -1,6 +1,7 @@
 subroutine calculate_bond
 
     use common_variables
+    use timings
 
     implicit none
 
@@ -13,6 +14,11 @@ subroutine calculate_bond
 
     !Scalar values used within the subroutine
     real(kind=dp) :: u_bond, r_sep, ftmp
+
+    !Timing variables
+    real(kind=dp) :: tinit,tfinal
+
+    call cpu_time(tinit)
        
     !Initialize
     v_b = 0.0_dp; fx_b = 0.0_dp; fy_b = 0.0_dp; fz_b = 0.0_dp
@@ -62,6 +68,10 @@ subroutine calculate_bond
             fz_b(b_atom_2) = fz_b(b_atom_2) - ftmp*rz(b_atom_1,b_atom_2) 
         enddo ! loop over bonds
     endif ! check if harmonic bonds
+    
+    !Add to total timing
+    call cpu_time(tfinal)
+    tbonds = tbonds + tfinal - tinit
 
 
 end subroutine

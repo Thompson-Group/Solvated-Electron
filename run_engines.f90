@@ -6,7 +6,10 @@
       implicit none
 
       integer(kind = ip) :: i
-      
+      real(kind=dp) :: tinit,tfinal
+
+      call cpu_time(tinit)
+
       do i = 1 , nstep
          
          ! update positions in first stage of VV integrator
@@ -22,6 +25,8 @@
          if (mod(i,df_rest) .eq. 0) call write_restart(i)
          
       enddo
+      call cpu_time(tfinal)
+      write(6,'(A,F10.1,A,F10.2,A)') ' Stage cpu time = ',tfinal-tinit,' s, = ',(tfinal-tinit)/3600_dp,' hr'
 
     end subroutine nve_run
 
@@ -34,6 +39,9 @@
       implicit none
       
       integer(kind = ip) :: i
+      real(kind=dp) :: tinit,tfinal
+
+      call cpu_time(tinit)
       
       do i = 1 , nstep
          
@@ -52,7 +60,8 @@
          ! write restart
          if (mod(i,df_rest) .eq. 0) call write_restart(i)
       enddo
-      
+      call cpu_time(tfinal)
+      write(6,'(A,F10.1,A,F10.2,A)') ' Stage cpu time = ',tfinal-tinit,' s, = ',(tfinal-tinit)/3600_dp,' hr'      
     end subroutine nvt_run
 
 ! Subroutine to do carry out a QM trajectory of the solvated electron
@@ -65,6 +74,9 @@
       implicit none
 
       integer(kind=ip) :: i
+      real(kind=dp) :: tinit,tfinal
+
+      call cpu_time(tinit)
 
       do i = 1, nstep
          
@@ -84,6 +96,8 @@
          ! write restart
          if (mod(i,df_rest) .eq. 0) call write_restart(i)
       enddo
+      call cpu_time(tfinal)
+      write(6,'(A,F10.1,A,F10.2,A)') ' Stage cpu time = ',tfinal-tinit,' s, = ',(tfinal-tinit)/3600_dp,' hr'
 
     end subroutine qm_nvt_run
 
@@ -96,6 +110,9 @@
       implicit none
 
       integer(kind=ip) :: i
+      real(kind=dp) :: tinit,tfinal
+
+      call cpu_time(tinit)
 
       do i = 1, nstep
 
@@ -112,6 +129,8 @@
          ! write restart
          if (mod(i,df_rest) .eq. 0) call write_restart(i)
       enddo
+      call cpu_time(tfinal)
+      write(6,'(A,F10.1,A,F10.2,A)') ' Stage cpu time = ',tfinal-tinit,' s, = ',(tfinal-tinit)/3600_dp,' hr'
 
     end subroutine qm_nve_run
 

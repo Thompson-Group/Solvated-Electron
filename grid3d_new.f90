@@ -9,6 +9,7 @@
       use common_variables
       use quantum_variables
       use constants
+      use timings
       
        implicit none
 !     --- Local Scalars and array ---
@@ -19,9 +20,13 @@
        real(kind=dp), dimension(3) :: re
        real(kind=dp), dimension(n_atoms) :: fxtmp, fytmp, fztmp    
        real(kind=dp) :: vtmp
+
+       !Timing variables
+       real(kind=dp) :: tinit,tfinal
+
+       call cpu_time(tinit)
  
        allocate(zg(nraw)); allocate(yg(nraw)); allocate(xg(nraw))
-
 
 
       del=(xmax-xmin)/real(nraw)
@@ -126,5 +131,10 @@
 
       write(6,*) ' In grid: ng = ',ng,' ngy = ',ngy,' ngz = ',ngz
       v_e = v_e/kcalperau
+
+      !Add to total timing
+      call cpu_time(tfinal)
+      tgrid = tgrid + tfinal - tinit
+
       
       end subroutine grid

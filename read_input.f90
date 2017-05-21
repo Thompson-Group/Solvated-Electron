@@ -4,6 +4,7 @@ subroutine read_input(input_filename, fc_flag)
     use quantum_variables
     use input_variables
     use constants
+    use timings
     implicit none
 
     integer(kind=ip) :: i, j, ign_int, done
@@ -158,6 +159,10 @@ subroutine read_input(input_filename, fc_flag)
             end if
     end do loopread
 
+    !Initialize the timings
+    tforces = 0.0_dp; tverlet = 0.0_dp
+    tbonds = 0.0_dp; tang = 0.0_dp; tvdw = 0.0_dp; tcoul = 0.0_dp; tdists = 0.0_dp
+    tgrid = 0.0_dp; tpseudo = 0.0_dp; tlanc = 0.0_dp; tqm_forces = 0.0_dp; tavgs = 0.0_dp
        
 
 end subroutine

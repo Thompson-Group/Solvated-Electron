@@ -15,14 +15,14 @@ program classical_md
 
        implicit none
 
-       integer(kind = ip) :: i, istage, d, nargs
-
+       integer(kind = ip) :: i, istage, d, nargs, istep
        character(len=50) :: input_filename, arg
-
+       real :: tstart, tend
        logical :: restart, change, fc_flag
 
 ! read inputs from command line
 
+       call cpu_time(tstart)
        nargs = command_argument_count()
 
        if (nargs .ne. 2) then
@@ -81,7 +81,8 @@ program classical_md
           if (.not. restart) call initvel
 
           ! write out initial thermo properties       
-          call thermo_dump(0)
+          istep = 0
+          call thermo_dump(istep)
           write(6,*) ' made it through thermo_dump '
           write(6,*) ' srun_style(istage) = ',srun_style(istage)
           
@@ -115,5 +116,9 @@ program classical_md
 ! close output files
 
        call output_setup('end')
+       call output_timings
+
+       call cpu_time(tend)
+       write(6,'(A,F10.1,A,F10.2,A)') ' cpu time      = ',tend-tstart,' s, = ',(tend-tstart)/60_dp,' min'
 
 end program classical_md

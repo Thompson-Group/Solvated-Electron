@@ -10,10 +10,15 @@
      use common_variables
      use quantum_variables
      use constants
-     implicit none
+     use timings 
 
+     implicit none
      integer(kind=ip) :: i 
-      real(kind=dp), dimension(ng) :: try
+     real(kind=dp), dimension(ng) :: try
+     !Timing variables
+     real(kind=dp) :: tinit,tfinal
+     
+     call cpu_time(tinit)
 
      ! First calculate the classical forces
      call forces
@@ -29,12 +34,10 @@
      ! Then diagonalize
      call planczos(try)
 
-
 ! Then average the forces
      call qm_force_avg
 
 !     write(6,*) 'qm_forces, Eig_1 = ',Eigval(1),' rg = ',r2_e_avg
-
 
      ! Add the quantum forces to the classical ones (overwrite the latter)
 
@@ -44,6 +47,10 @@
 
      ! Add the eigenvalue  of the electron to the classical electrostatic one (overwrite the latter)
      v_q = Eigval(Nst)*kcalperau
+
+     !Add to total timing
+     call cpu_time(tfinal)
+     tqm_forces = tqm_forces + tfinal - tinit
 
    end subroutine qm_forces
    
@@ -62,6 +69,7 @@
      use common_variables
      use quantum_variables
      use constants
+!     use omp_lib
      implicit none
 
      integer(kind=ip) :: i 
@@ -69,6 +77,9 @@
      real(kind=dp), dimension(3) :: re
      real(kind=dp), dimension(n_atoms) :: fxtmp, fytmp, fztmp
 
+!     call omp_set_num_threads(4)
+
+!$omp parallel do private(i,re,vtmp,fxtmp,fytmp,fztmp)
      do i = 1, ng
         re(:) = rg_e(i,:)
         call pseudo_e_tb(re,vtmp,fxtmp,fytmp,fztmp)
@@ -79,6 +90,7 @@
         fg_ez(i,:) = fztmp(:)
 
      enddo
+!$omp end parallel do
      v_e = v_e/kcalperau
 
    end subroutine v_e_update
@@ -125,12 +137,17 @@
      use common_variables
      use quantum_variables
      use constants
-     implicit none
+     use timings
 
+     implicit none
      integer(kind=ip) :: i, j, k
      real(kind=dp) :: psi2tmp, norm
      real(kind=dp), dimension(3) :: re
      real(kind=dp), dimension(ng) :: psi
+     !Timing variables
+     real(kind=dp) :: tinit,tfinal
+     
+     call cpu_time(tinit)
 
      ! First calculate the wavefunction of the Nst state
 
@@ -168,5 +185,8 @@
              + (rg_e(i,2) - r_e_avg(2))**2 + (rg_e(i,3) - r_e_avg(3))**2 )
      enddo
 
+     !Add to total timing
+     call cpu_time(tfinal)
+     tavgs = tavgs + tfinal - tinit
 
    end subroutine qm_force_avg

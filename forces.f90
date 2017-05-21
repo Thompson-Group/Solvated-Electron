@@ -6,9 +6,15 @@ subroutine forces
 !*************************************************************************************************
  use kinds
  use common_variables
+ use timings
   
  implicit none
   integer :: i 
+
+  !Timing variables
+  real(kind=dp) :: tinit,tfinal
+  
+  call cpu_time(tinit)
 
     call dists
     call calculate_bond
@@ -28,4 +34,8 @@ subroutine forces
     fy_tot = fy_a + fy_v + fy_c + fy_b
     fz_tot = fz_a + fz_v + fz_c + fz_b
     
+    !Add to total timing
+    call cpu_time(tfinal)
+    tforces = tforces + tfinal - tinit
+
 end subroutine forces

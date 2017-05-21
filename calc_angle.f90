@@ -4,13 +4,19 @@ subroutine calc_angle
 !Written by Mesele and Pubudu
 !hackathon Thursday January 12, 2017
 !*******************************************************************************************
- use kinds
+
  use common_variables
+ use timings
  implicit none
 
 !local variables
  integer(kind=ip) :: i,a,b,c,d
  real(kind=dp) :: dot_prod, pi, rad_equi,catmp,cfac,lenR1, lenR2, rad_ang
+
+ !Timing variables
+ real(kind=dp) :: tinit,tfinal
+
+ call cpu_time(tinit)
 
 !initialize forces and potential to zero
  fx_a = 0; fy_a = 0; fz_a= 0
@@ -58,6 +64,10 @@ subroutine calc_angle
 
          enddo
 !       write(1000,*) sum(fx_a(:)) + sum(fy_a(:)) + sum(fz_a(:))
+
+         !Add to total timing
+         call cpu_time(tfinal)
+         tang = tang + tfinal - tinit
       
 end subroutine calc_angle
 

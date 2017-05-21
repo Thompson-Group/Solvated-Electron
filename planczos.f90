@@ -3,11 +3,11 @@
 !
       subroutine planczos(try)
       
-!need to add actiter, niter, tol, n_eigtol, Eigval, Eigvec, Krylov_vectors to quantum_variables      
       use common_variables
       use quantum_variables
-      implicit none
+      use timings
 
+      implicit none
       integer(kind=ip) :: n, k, i, j, info
       real(kind=dp), dimension(ng) :: vect, vectp1, try
       real(kind=dp) ::  ytmp, len, dummy, eigval_old, error
@@ -16,6 +16,12 @@
       real(kind=dp), dimension(niter,niter) :: Areal
       real(kind=dp), dimension(3*niter) :: work
 
+      !Timing variables
+      real(kind=dp) :: tinit,tfinal
+      
+      call cpu_time(tinit)
+
+      ! Zero out eigenvalue to be used for convergence check
       eigval_old = 0.0_dp
       
       ! Set the 0th Krylov vector to the initial guess
@@ -117,5 +123,10 @@
  10   continue
       
       actiter = n
+
+      !Add to total timing
+      call cpu_time(tfinal)
+      tlanc = tlanc + tfinal - tinit
+
 
       end subroutine planczos

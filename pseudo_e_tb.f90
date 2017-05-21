@@ -10,6 +10,7 @@
   use quantum_variables
   use constants
   use pseudo_constants
+  use timings
  implicit none
 
 ! scalars
@@ -22,6 +23,11 @@
   real(kind=dp),dimension(3)    :: L, rHe, rOe, r 
   real(kind=dp), dimension(3), intent(in) :: re
   real(kind=dp), intent(out) :: vtmp
+
+  !Timing variables
+  real(kind=dp) :: tinit,tfinal
+
+  call cpu_time(tinit)
 
   vtmp = 0.0_dp; fxtmp = 0.0_dp; fytmp = 0.0_dp; fztmp = 0.0_dp
   two_by_rtpi = 2.0_dp/sqrt(pi)
@@ -106,5 +112,8 @@
         endif ! check if within cuttoff radius
   enddo
 
-return
+  !Add to total timing
+  call cpu_time(tfinal)
+  tpseudo = tpseudo + tfinal - tinit
+
 end subroutine pseudo_e_tb

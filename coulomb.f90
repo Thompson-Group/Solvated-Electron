@@ -14,11 +14,17 @@
 
   use common_variables
   use constants
+  use timings
   implicit none
 
 !Working variables
   integer i, j
   real(kind=dp) :: rij, fxtmp, fytmp, fztmp
+
+  !Timing variables
+  real(kind=dp) :: tinit,tfinal
+  
+  call cpu_time(tinit)
 
 ! Loop over pairs of atoms
 
@@ -49,5 +55,10 @@
 
      enddo
   enddo
+
+  !Add to total timing
+  call cpu_time(tfinal)
+  tcoul = tcoul + tfinal - tinit
+
 
  End Subroutine coulomb  

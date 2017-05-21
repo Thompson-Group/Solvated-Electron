@@ -107,7 +107,8 @@ Module pseudo_constants
   Implicit none
 
   ! Parameters are for the Turi-Borgis potential [JCP 117, 6186 (2002)] and currently in atomic units
-  real(kind=dp),parameter :: alpha_pol=9.7446_dp
+!  real(kind=dp),parameter :: alpha_pol=9.7446_dp
+  real(kind=dp),parameter :: alpha_pol=0.0_dp
   real(kind=dp),parameter :: qo  = -0.820_dp, qh  = 0.410_dp
   real(kind=dp),parameter :: A1o = 0.575_dp, A1h = 0.750_dp
   real(kind=dp),parameter :: B1o = 0.620_dp, B1h = 0.150_dp
@@ -116,3 +117,22 @@ Module pseudo_constants
   real(kind=dp),parameter :: C1o = 4.400_dp
 
 end module
+
+
+Module timings
+!**************************************************************************************************************
+! This module contains variables to track timings of different pieces of the code
+! These variables do not need to be declared in other subroutines.
+! use this module as needed in other subroutines
+!Written by Ward Thompson
+! May 20, 2017                                                                              
+!**************************************************************************************************************  
+
+  use kinds
+  Implicit none
+
+  real(kind=dp) :: tforces, tverlet
+  real(kind=dp) :: tbonds, tang, tvdw, tcoul, tdists
+  real(kind=dp) :: tgrid, tpseudo, tlanc, tqm_forces, tavgs
+
+end module timings

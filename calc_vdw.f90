@@ -6,11 +6,17 @@ subroutine calc_vdw()
 !************************************************************************
 
      use common_variables
+     use timings
      implicit none
 
      integer(kind = ip) :: i,j
      real(kind = dp) :: dist, ftmp
-
+     
+     !Timing variables
+     real(kind=dp) :: tinit,tfinal
+     
+     call cpu_time(tinit)
+    
 ! initialize
     
      v_v = 0.0_dp; fx_v = 0.0_dp; fy_v = 0.0_dp; fz_v = 0.0_dp     
@@ -69,5 +75,9 @@ subroutine calc_vdw()
           enddo
 
     enddo
+
+    !Add to total timing
+    call cpu_time(tfinal)
+    tvdw = tvdw + tfinal - tinit
 
 end subroutine 

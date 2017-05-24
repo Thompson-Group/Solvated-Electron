@@ -23,12 +23,12 @@ subroutine velocity_verlet
      x(i) = x(i) - (Lx * anint(x(i)/Lx))
      y(i) = y(i) - (Ly * anint(y(i)/Ly))
      z(i) = z(i) - (Lz * anint(z(i)/Lz))
-     
-     ! Stores the Old Forces    
-     fx_o(i)=fx_tot(i)
-     fy_o(i)=fy_tot(i)
-     fz_o(i)=fz_tot(i)
   enddo
+     
+  ! Stores the Old Forces    
+  fx_o = fx_tot
+  fy_o = fy_tot
+  fz_o = fz_tot
 
   call qm_forces
 

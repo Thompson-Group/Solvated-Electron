@@ -52,6 +52,8 @@ program classical_md
 
        write(*,*) "Doing a force check"
        if(fc_flag) call force_check
+!       write(*,*) "Doing a pseudopotential force check"
+!       call pseudo_force_check
 
 ! open output files
 

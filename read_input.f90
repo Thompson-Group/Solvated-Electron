@@ -95,6 +95,9 @@ subroutine read_input(input_filename, fc_flag)
                     snvt_freq(i)=0
                     read(ninput,*) xmin, xmax, nraw, vcut
                     read(ninput,*) niter, tol, eig_tol, Nst
+                    xmin = xmin/angperau   ! QM calculation is in atomic units; input in Angs.
+                    xmax = xmax/angperau   ! QM calculation is in atomic units; input in Angs.
+                    vcut = vcut/kcalperau  ! QM calculation is in atomic units; input in kcal/mol
                 else if (trim(srun_style(i)) .eq. 'qm_nvt') then
                     read(ninput,*) snvt_type(i), snvt_freq(i)
                     if (trim(snvt_type(i)) .eq. 'andersen') then
@@ -104,6 +107,9 @@ subroutine read_input(input_filename, fc_flag)
                     endif
                     read(ninput,*) xmin, xmax, nraw, vcut
                     read(ninput,*) niter, tol, eig_tol, Nst
+                    xmin = xmin/angperau   ! QM calculation is in atomic units; input in Angs.
+                    xmax = xmax/angperau   ! QM calculation is in atomic units; input in Angs.
+                    vcut = vcut/kcalperau  ! QM calculation is in atomic units; input in kcal/mol
                 else
                     write(*,*) "Error (read_input.f90): Couldn't find the run_style"
                     write(*,*) " in the input file."
@@ -158,6 +164,9 @@ subroutine read_input(input_filename, fc_flag)
                 exit
             end if
     end do loopread
+
+    !Initialize the potential
+    v_tot = 0.0_dp; v_a = 0.0_dp; v_b = 0.0_dp; v_c = 0.0_dp; v_v = 0.0_dp; v_q = 0.0_dp
 
     !Initialize the timings
     tforces = 0.0_dp; tverlet = 0.0_dp

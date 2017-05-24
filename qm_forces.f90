@@ -41,9 +41,11 @@
 
      ! Add the quantum forces to the classical ones (overwrite the latter)
 
-     fx_tot = fx_tot + fx_q
-     fy_tot = fy_tot + fy_q
-     fz_tot = fz_tot + fz_q
+     do i = 1, n_atoms
+        fx_tot(i) = fx_tot(i) + fx_q(i)
+        fy_tot(i) = fy_tot(i) + fy_q(i)
+        fz_tot(i) = fz_tot(i) + fz_q(i)
+     enddo
 
      ! Add the eigenvalue  of the electron to the classical electrostatic one (overwrite the latter)
      v_q = Eigval(Nst)*kcalperau
@@ -59,9 +61,7 @@
 !  This subroutine updates the solvated electron potential vector, v_e by
 !  recalculating it on a pre-determined grid. It does NOT determine the grid
 !
-!    Note that pseudo_e_tb returns the potential in kcal/mol 
-!     Thus, v_e is converted to atomic units before use in diagonalization
-!     Also, the forces are in kcal/mol/Angs.
+!    Note that pseudo_e_tb returns the potential and forces in au 
 !
 
    subroutine v_e_update
@@ -91,7 +91,6 @@
 
      enddo
 !$omp end parallel do
-     v_e = v_e/kcalperau
 
    end subroutine v_e_update
 
@@ -131,6 +130,9 @@
 !   It also calculates the average electron position and the radius
 !   of gyration.
 !
+!     Thus, v_e is converted from atomic units to kcal/mol
+!     Also, the forces are converted from a.u. to kcal/mol/Angs.
+!
 
    subroutine qm_force_avg
 
@@ -163,7 +165,7 @@
         psi2tmp = psi(i)**2
 
         ! Calculate averages
-        norm = norm + psi2tmp
+!        norm = norm + psi2tmp
         v_e_avg = v_e_avg + v_e(i)*psi2tmp
         r_e_avg(:) = r_e_avg(:) + rg_e(i,:)*psi2tmp
 
@@ -177,6 +179,9 @@
 
      ! convert the units of the potential and force
      v_e_avg = v_e_avg*kcalperau
+     fx_q = fx_q*kcalperau/angperau
+     fy_q = fy_q*kcalperau/angperau
+     fz_q = fz_q*kcalperau/angperau
      
      ! Calculate the radius of gyration (there must be a way to do this in the loop above)
      r2_e_avg = 0.0_dp

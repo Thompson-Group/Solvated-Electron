@@ -24,20 +24,26 @@ H
 O
 
 stages
-1
+2
+nvt
+rescale 5
 qm_nvt
 rescale 5
--10.0 10.0  32  0.0
-400 0.000010 8 1
+-10.0 10.0  16  200.0
+200 0.000010 8 1
 
 timestep
 1.0
+1.0
 
 run
-1
+100
+50
 
 dump_freq
 1 1 1
+1 1 1
 
 temperature
+298.15
 298.15

@@ -16,9 +16,7 @@ del_tmp = del/angperau
 
 pref = 1.0_dp/(2.0_dp*me*del_tmp**2)
 
-kex = 0.0_dp
-key = 0.0_dp
-kez = 0.0_dp
+kex = 0.0_dp; key = 0.0_dp; kez = 0.0_dp
 do i = 1, nraw
     kex(i,i) = pref*pi**2/3.0_dp
     key(i,i) = pref*pi**2/3.0_dp

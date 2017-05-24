@@ -25,7 +25,7 @@
   real(kind=dp) :: Cpref, pref, etmp, ecut, exptmp, expcut
 
 !External functions
-  real(kind=dp), external :: erfc
+  real(kind=dp), external :: derfc
 
   !Timing variables
   real(kind=dp) :: tinit,tfinal
@@ -37,7 +37,7 @@
   v_c = 0.0_dp; fx_c = 0.0_dp; fy_c = 0.0_dp; fz_c = 0.0_dp
 
   pref = 2.0_dp*alpha/sqrt(pi)
-  ecut = erfc(alpha*r_cut)/r_cut**2
+  ecut = derfc(alpha*r_cut)/r_cut**2
   expcut = pref*exp(-(alpha*r_cut)**2)/r_cut
 
   do j = 1, n_atoms - 1
@@ -49,7 +49,7 @@
            
            !Define some quantities used multiple times
            Cpref = C_coul*qq(i,j)
-           etmp = erfc(alpha*rij)/rij**2
+           etmp = derfc(alpha*rij)/rij**2
            exptmp = pref*exp(-(alpha*rij)**2)/rij
 
            v_c = v_c + Cpref*( etmp*rij - ecut*r_cut + ( ecut + expcut)*(rij-r_cut) )  ! potential

@@ -107,8 +107,8 @@ Module pseudo_constants
   Implicit none
 
   ! Parameters are for the Turi-Borgis potential [JCP 117, 6186 (2002)] and currently in atomic units
-!  real(kind=dp),parameter :: alpha_pol=9.7446_dp
-  real(kind=dp),parameter :: alpha_pol=0.0_dp
+  real(kind=dp),parameter :: alpha_pol=9.7446_dp
+!  real(kind=dp),parameter :: alpha_pol=0.0_dp
   real(kind=dp),parameter :: qo  = -0.820_dp, qh  = 0.410_dp
   real(kind=dp),parameter :: A1o = 0.575_dp, A1h = 0.750_dp
   real(kind=dp),parameter :: B1o = 0.620_dp, B1h = 0.150_dp

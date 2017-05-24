@@ -105,8 +105,9 @@
          end do
          
          if (n.eq.niter.or.n.gt.eig_tol) then
+            Eigvals = 0.0_dp
             call dsyev('V', 'L', n, Areal, niter, Eigvals,work, 3*niter, info)
-            do i = n, 1, -1
+            do i = 1, n
                Eigval(i) = Eigvals(i)
             enddo
             do i = 1, n

@@ -32,7 +32,8 @@
     call random_seed()
     call random_number(harvest = num)
 !    iat = nint( num*real(n_atoms-1) ) + 1
-    iat = 1
+    iat = 10
+
 
 ! Calculate the forces and potential
 
@@ -149,7 +150,8 @@
     write(fc_ext,'(I0)') qfc_cnt
     open(nfc,file='qm_force_check.'//trim(fc_ext))
 
-    write(nfc,'(A,I4)') ' Atom chosen = ',iat
+    write(nfc,'(A,I4)')    ' Atom chosen = ',iat
+    write(nfc,'(A,F12.5)') ' Increment   = ',delta
     write(nfc,*)
     write(nfc,*) ' ----- Total Forces -----'
     write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fx = ',fx0,' Numerical:  fx = ',fxnum

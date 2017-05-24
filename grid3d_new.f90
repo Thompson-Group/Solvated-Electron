@@ -11,27 +11,29 @@
       use constants
       use timings
       
-       implicit none
+      implicit none
 !     --- Local Scalars and array ---
-       integer(kind=ip) :: i, j, k, ii
-       integer(kind=ip) :: ngx, ngy, ngz
-       real(kind=dp), dimension(:), allocatable :: zg, xg, yg
+      integer(kind=ip) :: i, j, k, ii
+      integer(kind=ip) :: ngx, ngy, ngz
+      real(kind=dp), dimension(:), allocatable :: zg, xg, yg
 !    ------semi - global array
-       real(kind=dp), dimension(3) :: re
-       real(kind=dp), dimension(n_atoms) :: fxtmp, fytmp, fztmp    
-       real(kind=dp) :: vtmp
+      real(kind=dp), dimension(3) :: re
+      real(kind=dp), dimension(n_atoms) :: fxtmp, fytmp, fztmp    
+      real(kind=dp) :: vtmp
 
-       !Timing variables
-       real(kind=dp) :: tinit,tfinal
+      !Timing variables
+      real(kind=dp) :: tinit,tfinal
 
-       call cpu_time(tinit)
+      call cpu_time(tinit)
  
-       allocate(zg(nraw)); allocate(yg(nraw)); allocate(xg(nraw))
-
+      allocate(zg(nraw)); allocate(yg(nraw)); allocate(xg(nraw))
 
       del=(xmax-xmin)/real(nraw)
 
-!      write(nout,'(A,F12.5,A)') ' DVR dx = ',del,' angstroms'
+      write(6,'(A,F12.5,A)') ' DVR xmin = ',xmin,' au'
+      write(6,'(A,F12.5,A)') ' DVR xmin = ',xmax,' au'
+      write(6,'(A,I4)') ' DVR nraw = ',nraw
+      write(6,'(A,F12.5,A)') ' DVR dx = ',del,' au'
 
       do i = 1, nraw
          xg(i) = xmin + dble(i-1)*del
@@ -60,15 +62,16 @@
                re(1) = xg(i)
                call pseudo_e_tb(re,vtmp,fxtmp,fytmp,fztmp)
                if(vtmp.le.vcut) then
-!                 write(33,'(I4,4F12.5)') ngx+1, (re(ii),ii=1,3), vtmp
+                 write(33,'(I4,4F12.5)') ngx+1, (re(ii),ii=1,3), vtmp*kcalperau
                   ngx = ngx + 1
                   fg_ex(ngx,:) = fxtmp(:)
                   fg_ey(ngx,:) = fytmp(:)
                   fg_ez(ngx,:) = fztmp(:)
                   v_e(ngx) = vtmp
-                  rg_e(ngx,1) = xg(i)
-                  rg_e(ngx,2) = yg(j)
-                  rg_e(ngx,3) = zg(k)
+                  rg_e(ngx,:) = re(:)
+!                  rg_e(ngx,1) = xg(i)
+!                  rg_e(ngx,2) = yg(j)
+!                  rg_e(ngx,3) = zg(k)
                   inxgridx(ngx) = i
                   inygridx(ngx) = j
                   inzgridx(ngx) = k
@@ -91,9 +94,6 @@
                call pseudo_e_tb(re,vtmp,fxtmp,fytmp,fztmp)
                if(vtmp.le.vcut) then
                   ngy = ngy + 1
-                  fg_ex(ngy,:) = fxtmp(:)
-                  fg_ey(ngy,:) = fytmp(:)
-                  fg_ez(ngy,:) = fztmp(:)
                   inygridy(ngy) = i
                   inxgridy(ngy) = j
                   inzgridy(ngy) = k
@@ -115,9 +115,6 @@
                call pseudo_e_tb(re,vtmp,fxtmp,fytmp,fztmp)
                if(vtmp.le.vcut) then
                   ngz = ngz + 1
-                  fg_ex(ngz,:) = fxtmp(:)
-                  fg_ey(ngz,:) = fytmp(:)
-                  fg_ez(ngz,:) = fztmp(:)
                   inzgridz(ngz) = i
                   inxgridz(ngz) = j
                   inygridz(ngz) = k
@@ -130,11 +127,9 @@
       deallocate(zg); deallocate(yg); deallocate(xg)
 
       write(6,*) ' In grid: ng = ',ng,' ngy = ',ngy,' ngz = ',ngz
-      v_e = v_e/kcalperau
 
       !Add to total timing
       call cpu_time(tfinal)
       tgrid = tgrid + tfinal - tinit
 
-      
       end subroutine grid

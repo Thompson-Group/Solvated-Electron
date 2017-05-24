@@ -62,7 +62,7 @@
 
 !  Calculate the potential energy
 
-    v_tot = v_a + v_b + v_c + v_v
+    v_tot = v_a + v_b + v_c + v_v + v_q
 
 !  Calculate the total energy
 

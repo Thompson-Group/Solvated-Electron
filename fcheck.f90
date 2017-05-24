@@ -144,58 +144,58 @@
     write(nfc,'(A,I4)') ' Atom chosen = ',iat
     write(nfc,*)
     write(nfc,*) ' ----- Total Forces -----'
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fx = ',fx0,' Numerical:  fx = ',fxnum
-    write(nfc,'(A,F15.8)') ' % Error in fx = ',(fx0-fxnum)*100.0_dp/fxnum
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fx = ',fx0,' Numerical:  fx = ',fxnum
+    write(nfc,'(A,F15.10)') ' % Error in fx = ',(fx0-fxnum)*100.0_dp/fxnum
     write(nfc,*)
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fy = ',fy0,' Numerical:  fy = ',fynum
-    write(nfc,'(A,F15.8)') ' % Error in fy = ',(fy0-fynum)*100.0_dp/fynum
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fy = ',fy0,' Numerical:  fy = ',fynum
+    write(nfc,'(A,F15.10)') ' % Error in fy = ',(fy0-fynum)*100.0_dp/fynum
     write(nfc,*)
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fz = ',fz0,' Numerical:  fz = ',fznum
-    write(nfc,'(A,F15.8)') ' % Error in fz = ',(fz0-fznum)*100.0_dp/fznum
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fz = ',fz0,' Numerical:  fz = ',fznum
+    write(nfc,'(A,F15.10)') ' % Error in fz = ',(fz0-fznum)*100.0_dp/fznum
 
     write(nfc,*)
     write(nfc,*) ' ----- Bond Stretching Forces -----'
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fx = ',fx0_b,' Numerical:  fx = ',fxnum_b
-    write(nfc,'(A,F15.8)') ' % Error in fx = ',(fx0_b-fxnum_b)*100.0_dp/fxnum_b
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fx = ',fx0_b,' Numerical:  fx = ',fxnum_b
+    write(nfc,'(A,F15.10)') ' % Error in fx = ',(fx0_b-fxnum_b)*100.0_dp/fxnum_b
     write(nfc,*)
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fy = ',fy0_b,' Numerical:  fy = ',fynum_b
-    write(nfc,'(A,F15.8)') ' % Error in fy = ',(fy0_b-fynum_b)*100.0_dp/fynum_b
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fy = ',fy0_b,' Numerical:  fy = ',fynum_b
+    write(nfc,'(A,F15.10)') ' % Error in fy = ',(fy0_b-fynum_b)*100.0_dp/fynum_b
     write(nfc,*)
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fz = ',fz0_b,' Numerical:  fz = ',fznum_b
-    write(nfc,'(A,F15.8)') ' % Error in fz = ',(fz0_b-fznum_b)*100.0_dp/fznum_b
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fz = ',fz0_b,' Numerical:  fz = ',fznum_b
+    write(nfc,'(A,F15.10)') ' % Error in fz = ',(fz0_b-fznum_b)*100.0_dp/fznum_b
 
     write(nfc,*)
     write(nfc,*) ' ----- Angle Bending Forces -----'
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fx = ',fx0_a,' Numerical:  fx = ',fxnum_a
-    write(nfc,'(A,F15.8)') ' % Error in fx = ',(fx0_a-fxnum_a)*100.0_dp/fxnum_a
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fx = ',fx0_a,' Numerical:  fx = ',fxnum_a
+    write(nfc,'(A,F15.10)') ' % Error in fx = ',(fx0_a-fxnum_a)*100.0_dp/fxnum_a
     write(nfc,*)
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fy = ',fy0_a,' Numerical:  fy = ',fynum_a
-    write(nfc,'(A,F15.8)') ' % Error in fy = ',(fy0_a-fynum_a)*100.0_dp/fynum_a
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fy = ',fy0_a,' Numerical:  fy = ',fynum_a
+    write(nfc,'(A,F15.10)') ' % Error in fy = ',(fy0_a-fynum_a)*100.0_dp/fynum_a
     write(nfc,*)
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fz = ',fz0_a,' Numerical:  fz = ',fznum_a
-    write(nfc,'(A,F15.8)') ' % Error in fz = ',(fz0_a-fznum_a)*100.0_dp/fznum_a
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fz = ',fz0_a,' Numerical:  fz = ',fznum_a
+    write(nfc,'(A,F15.10)') ' % Error in fz = ',(fz0_a-fznum_a)*100.0_dp/fznum_a
 
     write(nfc,*)
     write(nfc,*) ' ----- van der Waals Forces -----'
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fx = ',fx0_v,' Numerical:  fx = ',fxnum_v
-    write(nfc,'(A,F15.8)') ' % Error in fx = ',(fx0_v-fxnum_v)*100.0_dp/fxnum_v
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fx = ',fx0_v,' Numerical:  fx = ',fxnum_v
+    write(nfc,'(A,F15.10)') ' % Error in fx = ',(fx0_v-fxnum_v)*100.0_dp/fxnum_v
     write(nfc,*)
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fy = ',fy0_v,' Numerical:  fy = ',fynum_v
-    write(nfc,'(A,F15.8)') ' % Error in fy = ',(fy0_v-fynum_v)*100.0_dp/fynum_v
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fy = ',fy0_v,' Numerical:  fy = ',fynum_v
+    write(nfc,'(A,F15.10)') ' % Error in fy = ',(fy0_v-fynum_v)*100.0_dp/fynum_v
     write(nfc,*)
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fz = ',fz0_v,' Numerical:  fz = ',fznum_v
-    write(nfc,'(A,F15.8)') ' % Error in fz = ',(fz0_v-fznum_v)*100.0_dp/fznum_v
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fz = ',fz0_v,' Numerical:  fz = ',fznum_v
+    write(nfc,'(A,F15.10)') ' % Error in fz = ',(fz0_v-fznum_v)*100.0_dp/fznum_v
 
     write(nfc,*)
     write(nfc,*) ' ----- Electrostatic Forces -----'
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fx = ',fx0_c,' Numerical:  fx = ',fxnum_c
-    write(nfc,'(A,F15.8)') ' % Error in fx = ',(fx0_c-fxnum_c)*100.0_dp/fxnum_c
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fx = ',fx0_c,' Numerical:  fx = ',fxnum_c
+    write(nfc,'(A,F15.10)') ' % Error in fx = ',(fx0_c-fxnum_c)*100.0_dp/fxnum_c
     write(nfc,*)
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fy = ',fy0_c,' Numerical:  fy = ',fynum_c
-    write(nfc,'(A,F15.8)') ' % Error in fy = ',(fy0_c-fynum_c)*100.0_dp/fynum_c
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fy = ',fy0_c,' Numerical:  fy = ',fynum_c
+    write(nfc,'(A,F15.10)') ' % Error in fy = ',(fy0_c-fynum_c)*100.0_dp/fynum_c
     write(nfc,*)
-    write(nfc,'(A,F15.8,A,F15.8)') ' Analytical: fz = ',fz0_c,' Numerical:  fz = ',fznum_c
-    write(nfc,'(A,F15.8)') ' % Error in fz = ',(fz0_c-fznum_c)*100.0_dp/fznum_c
+    write(nfc,'(A,F15.10,A,F15.10)') ' Analytical: fz = ',fz0_c,' Numerical:  fz = ',fznum_c
+    write(nfc,'(A,F15.10)') ' % Error in fz = ',(fz0_c-fznum_c)*100.0_dp/fznum_c
 
     close(nfc)
 

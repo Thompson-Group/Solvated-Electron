@@ -16,18 +16,17 @@
 
      call grid
 
-     allocate(Eigvec(niter,niter))
-     allocate(Eigval(niter))
-     allocate(Krylov_vectors(0:niter,ng))
-     allocate(indxx(ng))
-
      call kinetic
      call rankyx
      call rankzx
      call looplims
 !     call graphgrid
+     write(6,*) ' Made it through grid indexing'
      try = 1.0_dp/(sqrt(real(ng)))
 
+!     write(6,*) ' About to stop'
+!     stop
+!     write(6,*) ' Did not stop!'
      call planczos(try)
      !call direct_diag
      write(6,*) ' actiter = ',actiter
@@ -37,7 +36,8 @@
 
      call qm_forces
 
-     call qm_force_check
+!     call qm_force_check
+!     stop
 
    end subroutine qmsetup
 
@@ -77,6 +77,10 @@
         allocate(isx(nfull)); allocate(ifx(nfull)); allocate(isy(nfull)); allocate(ify(nfull))
         allocate(isz(nfull)); allocate(ifz(nfull))
         allocate(kex(nraw,nraw)); allocate(key(nraw,nraw)); allocate(kez(nraw,nraw))
+        allocate(Eigvec(niter,niter))
+        allocate(Eigval(niter))
+        allocate(Krylov_vectors(0:niter,nfull))
+        allocate(indxx(nfull))
      endif
      
    end subroutine qm_allocation
